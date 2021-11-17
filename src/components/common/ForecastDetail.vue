@@ -3,21 +3,21 @@
     <div>
       <el-form :inline="true" v-model="reviewDetail" ref="reviewDetail">
         <p class="review-form-section">
-          123入库批次号：{{ ifempty(reviewDetail.batckNumber) }}
+          入库批次号：{{ ifempty(reviewDetail.batckNumber) }}
         </p>
-        <p class="review-form-section">预报商品信息：</p>
-        <el-table border fit :data="reviewDetail.packs">
-          <el-table-column label="参考码">
+        <p class="review-form-section">商品信息：</p>
+        <el-table border fit :data="goodsList">
+          <el-table-column label="sku">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.id) }}</span>
+              <span>{{ ifempty(scope.row.sku) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="包裹数">
+          <el-table-column label="数量">
             <template slot-scope="scope">
               <span>{{ ifempty(scope.row.count) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="包裹明细及请求服务项目">
+          <el-table-column label="服务项目">
             <!-- <template slot-scope="scope">
               <span>{{ ifempty(scope.row.services) }}</span>
             </template> -->
@@ -28,35 +28,26 @@
             </template>
           </el-table-column>
         </el-table>
-        <p class="review-form-section">商品总数汇总：</p>
-        <el-form-item style="width: 48%; margin-bottom: 0px">
-          <el-input
-            placeholder="没有数据"
-            v-model="reviewDetail.sku"
-            readonly=""
-          >
-            <template slot="prepend">SKU</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item style="width: 48%; margin-bottom: 0px">
-          <el-input
-            placeholder="没有数据"
-            v-model="reviewDetail.count"
-            readonly
-          >
-            <template slot="prepend">数量</template>
-          </el-input>
-        </el-form-item>
-        <p class="review-form-section">备注：</p>
-        <el-input
-          type="textarea"
-          :rows="4"
-          readonly
-          resize="none"
-          placeholder="没有数据"
-          v-model="reviewDetail.note"
-        >
-        </el-input>
+        <p class="review-form-section">包裹信息：</p>
+        <el-table border fit :data="reviewDetail.packs">
+          <el-table-column label="数量">
+            <template slot-scope="scope">
+              <span>{{ ifempty(scope.row.count) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="包裹信息">
+            <template slot-scope="scope">
+              <p>长：{{ scope.row.length }}</p>
+              <p>宽：{{ scope.row.width }}</p>
+              <p>高：{{ scope.row.height }}</p>
+            </template>
+          </el-table-column>
+          <el-table-column label="备注">
+            <template slot-scope="scope">
+              <span>{{ ifempty(scope.row.desc) }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-form>
     </div>
     <div slot="footer" class="dialog-footer">
@@ -78,7 +69,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      reviewDetail: {}
+      reviewDetail: {},
+      goodsList: []
     }
   },
   methods: {
@@ -87,9 +79,14 @@ export default {
         this.dialogVisible = true
         this.reviewDetail = res.data
         console.log(this.reviewDetail, 'reviewDetail')
+        this.reviewDetail.packs.forEach(pack => {
+          this.goodsList = [...this.goodsList, ...pack.goods]
+        })
+        console.log(this.goodsList)
       })
     },
     openDialogVisible(id) {
+      this.goodsList = []
       this._getForecastDetail(id)
     },
     ifempty(value) {
@@ -99,4 +96,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.review-form-section {
+  margin: 10px 0;
+}
+</style>

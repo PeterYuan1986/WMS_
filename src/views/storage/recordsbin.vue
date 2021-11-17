@@ -96,7 +96,7 @@
         </el-table-column>
         <el-table-column label="物品信息">
           <template slot-scope="scope">
-            <div v-for="item in scope.row.goods" :key="item.goodsId">
+            <div v-for="(item, index) in scope.row.goods" :key="index">
               <p>SKU：{{ ifempty(item.sku) }}</p>
               <p>数量：{{ ifempty(item.count) }}</p>
             </div>

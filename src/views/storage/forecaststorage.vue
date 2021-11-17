@@ -270,12 +270,16 @@ export default {
           }
         })
       })
-        .then(() => {
+        .then(res => {
           this.$refs.storageFrom.resetFields()
           this.packageForm = JSON.parse(JSON.stringify(initPacks))
           this.storageFrom = JSON.parse(JSON.stringify(initStroage))
           this.storageFrom.warsehouse = this.warehouseactive.id
-          this.$message.success('预报入库成功！')
+          if (res.data.code === 1) {
+            this.$message.success('预报入库成功！')
+          } else {
+            this.$message.success('预报入库失败！')
+          }
         })
         .catch(error => {
           this.$message.error(error)
