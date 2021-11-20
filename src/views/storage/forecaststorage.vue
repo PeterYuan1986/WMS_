@@ -73,14 +73,14 @@
           <el-table-column label="序号" width="75px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.$index + 1) }}</span>
+                <span>{{$ifempty(scope.$index + 1) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="包裹数" width="100px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.count) }}</span>
+                <span>{{$ifempty(scope.row.count) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -130,14 +130,14 @@
           <el-table-column label="费用" width="75px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.price) }}</span>
+                <span>{{$ifempty(scope.row.price) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.desc) }}</span>
+                <span>{{$ifempty(scope.row.desc) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -249,9 +249,7 @@ export default {
       this.storageFrom.warsehouse = this.warehouseactive.id
       this.storageFrom.name = this.warehouseactive.seller
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     async handleForecast() {
       const { packs, ...res } = this.storageFrom
       await Axios.fetchPut('/seller/firstpass/forecast', {
@@ -275,7 +273,8 @@ export default {
           this.packageForm = JSON.parse(JSON.stringify(initPacks))
           this.storageFrom = JSON.parse(JSON.stringify(initStroage))
           this.storageFrom.warsehouse = this.warehouseactive.id
-          if (res.data.code === 1) {
+          console.log(res.code, res.code === 1)
+          if (res.code === 1) {
             this.$message.success('预报入库成功！')
           } else {
             this.$message.success('预报入库失败！')

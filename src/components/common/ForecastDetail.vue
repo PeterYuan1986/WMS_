@@ -3,28 +3,31 @@
     <div>
       <el-form :inline="true" v-model="reviewDetail" ref="reviewDetail">
         <p class="review-form-section">
-          入库批次号：{{ ifempty(reviewDetail.batckNumber) }}
+          入库批次号：{{ $ifempty(reviewDetail.batckNumber) }}
         </p>
         <p class="review-form-section">商品信息：</p>
         <el-table border fit :data="goodsList">
           <el-table-column label="sku">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="数量">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.count) }}</span>
+              <span>{{ $ifempty(scope.row.count) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="服务项目">
-            <!-- <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.services) }}</span>
-            </template> -->
+          <el-table-column label="服务项目" width="400px">
+            <template slot-scope="scope">
+              <p v-for="(service, index) in scope.row.services" :key="index">
+                ${{ service.unitprice }}/{{ service.title }} -
+                {{ service.desc }}
+              </p>
+            </template>
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.desc) }}</span>
+              <span>{{ $ifempty(scope.row.desc) }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -32,7 +35,7 @@
         <el-table border fit :data="reviewDetail.packs">
           <el-table-column label="数量">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.count) }}</span>
+              <span>{{ $ifempty(scope.row.count) }}</span>
             </template>
           </el-table-column>
           <el-table-column label="包裹信息">
@@ -44,7 +47,7 @@
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
-              <span>{{ ifempty(scope.row.desc) }}</span>
+              <span>{{ $ifempty(scope.row.desc) }}</span>
             </template>
           </el-table-column>
         </el-table>
@@ -78,19 +81,14 @@ export default {
       Axios.fetchGet(`/biz/firstpass/${id}`).then(res => {
         this.dialogVisible = true
         this.reviewDetail = res.data
-        console.log(this.reviewDetail, 'reviewDetail')
         this.reviewDetail.packs.forEach(pack => {
           this.goodsList = [...this.goodsList, ...pack.goods]
         })
-        console.log(this.goodsList)
       })
     },
     openDialogVisible(id) {
       this.goodsList = []
       this._getForecastDetail(id)
-    },
-    ifempty(value) {
-      return value || '--'
     }
   }
 }
@@ -99,5 +97,6 @@ export default {
 <style lang="less" scoped>
 .review-form-section {
   margin: 10px 0;
+  color: #000;
 }
 </style>

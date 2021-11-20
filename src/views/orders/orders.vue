@@ -118,13 +118,13 @@
                 <el-table-column label="SKU">
                   <template slot-scope="scope">
                     <div>
-                      <span>{{ ifempty(scope.row.sku) }}</span>
+                      <span>{{$ifempty(scope.row.sku) }}</span>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column label="数量">
                   <template slot-scope="scope">
-                    <p>{{ ifempty(scope.row.count) }}</p>
+                    <p>{{$ifempty(scope.row.count) }}</p>
                   </template>
                 </el-table-column>
                 <el-table-column label="状态" width="100">
@@ -329,9 +329,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose(done) {
       done()
     },

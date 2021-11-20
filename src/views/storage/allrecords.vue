@@ -58,35 +58,35 @@
         <el-table-column label="序号" width="75">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.$index + 1) }}</span>
+              <span>{{$ifempty(scope.$index + 1) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="操作日期" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.updateTime) }}</span>
+              <span>{{$ifempty(scope.row.updateTime) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="对应订单号/批次号" width="150">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.batckNumber) }}</p>
+            <p>{{$ifempty(scope.row.batckNumber) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物品信息">
           <template slot-scope="scope">
             <div :key="index" v-for="(item, index) in scope.row.goods">
-              <p>SKU：{{ ifempty(item.sku) }}</p>
+              <p>SKU：{{$ifempty(item.sku) }}</p>
               <p>数量：{{ item.count }}</p>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="物流信息" width="200px">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.logistic) }}</p>
-            <p>单 号：{{ ifempty(scope.row.lognumber) }}</p>
-            <p>配送状态：{{ ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.logistic) }}</p>
+            <p>单 号：{{$ifempty(scope.row.lognumber) }}</p>
+            <p>配送状态：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="状态" width="150">
@@ -140,29 +140,29 @@
           ref="reviewDetailForm"
         >
           <p class="review-form-section">
-            入库批次号：{{ ifempty(reviewDetail.batckNumber) }}
+            入库批次号：{{$ifempty(reviewDetail.batckNumber) }}
           </p>
           <p class="review-form-section">预报物品信息：</p>
 
           <el-table border fit :data="reviewDetail.rows">
             <el-table-column label="参考码">
               <template slot-scope="scope">
-                <span>{{ ifempty(scope.row.code) }}</span>
+                <span>{{$ifempty(scope.row.code) }}</span>
               </template>
             </el-table-column>
             <el-table-column label="包裹数">
               <template slot-scope="scope">
-                <span>{{ ifempty(scope.row.packnum) }}</span>
+                <span>{{$ifempty(scope.row.packnum) }}</span>
               </template>
             </el-table-column>
             <el-table-column label="包裹明细及请求服务项目">
               <template slot-scope="scope">
-                <span>{{ ifempty(scope.row.services) }}</span>
+                <span>{{$ifempty(scope.row.services) }}</span>
               </template>
             </el-table-column>
             <el-table-column label="备注">
               <template slot-scope="scope">
-                <span>{{ ifempty(scope.row.notes) }}</span>
+                <span>{{$ifempty(scope.row.notes) }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -274,9 +274,7 @@ export default {
         this.reviewDetail = row
       }
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose() {
       this.$refs.reviewDetailForm.resetFields()
       this.dialogVisible = false

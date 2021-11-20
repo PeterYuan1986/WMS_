@@ -44,13 +44,13 @@
         <el-table-column label="库位名称" width="300">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="详细介绍">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.desc) }}</span>
+            <span>{{$ifempty(scope.row.desc) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="200">
@@ -166,9 +166,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

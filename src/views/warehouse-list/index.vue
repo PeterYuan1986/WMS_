@@ -80,13 +80,13 @@
         <el-table-column label="仓库名" width="175">
           <template slot-scope="scope">
             <el-button type="text" @click="handleDrawerClick(scope.row)">
-              {{ ifempty(scope.row.name) }}
+              {{$ifempty(scope.row.name) }}
             </el-button>
           </template>
         </el-table-column>
         <el-table-column label="地址" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.mainStreet) }}</span>
+            <span>{{$ifempty(scope.row.mainStreet) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="类型" width="100">
@@ -99,7 +99,7 @@
         </el-table-column>
         <el-table-column label="面积">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.area) }}</span>
+            <span>{{$ifempty(scope.row.area) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="星级" width="180">
@@ -299,9 +299,7 @@ export default {
       this.searchdialogVisible = false
       console.log(res)
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleSearch() {
       console.log('添加')
     },

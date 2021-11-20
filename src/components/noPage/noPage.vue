@@ -91,10 +91,8 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  components: {},
   mounted() {
     if (!this.disabledAutoInit) {
-      console.log(this.$store.getters.getApi)
       this.$store.dispatch('noPage/init')
     }
   },
@@ -142,9 +140,7 @@ export default {
     ...mapMutations({
       updateStates: 'noPage/updateStates'
     }),
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleSelectionChange(val) {
       this.multipleSelection = val
     },

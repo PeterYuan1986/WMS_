@@ -280,7 +280,7 @@ export default {
   methods: {
     async handleWarsehouseChange() {
       const res = await Axios.fetchGet(
-        `/seller/getContract?id=${this.warehouseactive.id}`
+        `/seller/getContractByModel?id=${this.warehouseactive.id}&model=1`
       )
       this.servicesModel = res.data
     },
@@ -321,11 +321,7 @@ export default {
       this.barcode = response.data
     },
     confirmSuccess() {
-      this.$emit(
-        'confirmSuccess',
-        this.products,
-        this.servicesModelCascader
-      )
+      this.$emit('confirmSuccess', this.products, this.servicesModelCascader)
     }
   }
 }

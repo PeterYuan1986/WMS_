@@ -244,9 +244,7 @@ export default {
         loading.close()
       }
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose() {
       this.dialogVisible = false
     },

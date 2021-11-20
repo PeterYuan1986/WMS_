@@ -48,41 +48,46 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.rid) }}</span>
+              <span>{{$ifempty(scope.row.rid) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="仓库SKU" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.stksku) }}</span>
+            <span>{{$ifempty(scope.row.stksku) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="所属用户">
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.selsku) }}</span>
+              <span>{{$ifempty(scope.row.selsku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
+          </template>
+        </el-table-column>
+         <el-table-column label="数量">
+          <template slot-scope="scope">
+            <span>{{$ifempty(scope.row.count) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="尺寸">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="200">
@@ -257,9 +262,7 @@ export default {
     this.$store.commit('noPage/setApi', '/iteminfo/get')
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose() {
       console.log(1)
       this.$refs.editForm.resetFields()

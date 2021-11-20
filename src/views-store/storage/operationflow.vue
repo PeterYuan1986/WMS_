@@ -110,13 +110,13 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="对应订单号/批次号">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="动作" width="150">
@@ -128,16 +128,16 @@
         </el-table-column>
         <el-table-column label="物品信息">
           <template slot-scope="scope">
-            <p>SKU：{{ ifempty(scope.row.name) }}</p>
-            <p>数量：{{ ifempty(scope.row.name) }}</p>
+            <p>SKU：{{$ifempty(scope.row.name) }}</p>
+            <p>数量：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物流信息">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.name) }}</p>
-            <p>快递费：{{ ifempty(scope.row.name) }}</p>
-            <p>单 号：{{ ifempty(scope.row.name) }}</p>
-            <p>配送状态：{{ ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.name) }}</p>
+            <p>快递费：{{$ifempty(scope.row.name) }}</p>
+            <p>单 号：{{$ifempty(scope.row.name) }}</p>
+            <p>配送状态：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
 
@@ -292,9 +292,6 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
     getlist() {},
     handleFilter() {},
     searchReset() {},

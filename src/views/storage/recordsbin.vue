@@ -85,27 +85,27 @@
         <el-table-column label="操作日期" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.updateTime) }}</span>
+              <span>{{$ifempty(scope.row.updateTime) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="对应订单号/批次号">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.batckNumber) }}</p>
+            <p>{{$ifempty(scope.row.batckNumber) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物品信息">
           <template slot-scope="scope">
             <div v-for="(item, index) in scope.row.goods" :key="index">
-              <p>SKU：{{ ifempty(item.sku) }}</p>
-              <p>数量：{{ ifempty(item.count) }}</p>
+              <p>SKU：{{$ifempty(item.sku) }}</p>
+              <p>数量：{{$ifempty(item.count) }}</p>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="物流信息">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.logistic) }}</p>
-            <p>单 号：{{ ifempty(scope.row.lognumber) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.logistic) }}</p>
+            <p>单 号：{{$ifempty(scope.row.lognumber) }}</p>
             <p>配送状态：--</p>
           </template>
         </el-table-column>
@@ -252,9 +252,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getList() {
       Axios.fetchGet(`/seller/firstpass/listRecords`, {
         recycle: true

@@ -257,9 +257,7 @@ export default {
         this.loading = false
       }
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose() {
       this.dialogVisible = false
     },

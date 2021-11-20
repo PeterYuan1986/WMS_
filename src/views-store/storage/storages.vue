@@ -44,21 +44,21 @@
       <div
         class="aside-item1"
         :class="menuactive == '/storagedashboard' ? 'isactive' : ''"
-        @click="cliclmenu('/storagedashboard')"
+        @click="clickmenu('/storagedashboard')"
       >
         {{ warehouseactive.seller }}
       </div>
       <!-- <div
         class="aside-item1"
         :class="menuactive == '/storagedashboard' ? 'isactive' : ''"
-        @click="cliclmenu('/storagedashboard')"
+        @click="clickmenu('/storagedashboard')"
       >
         XXXX仓库1
       </div>
       <div
         class="aside-item3"
         :class="menuactive == '/sproduct' ? 'isactive' : ''"
-        @click="cliclmenu('/sproduct')"
+        @click="clickmenu('/sproduct')"
       >
         仓库商品信息
       </div> -->
@@ -66,24 +66,24 @@
         <i class="icon iconfont icon-xingzhuang7123"></i>
         <p>头程管理</p>
       </div>
-      <div
+      <!-- <div
         class="aside-item3"
         :class="menuactive == '/forecaststorage' ? 'isactive' : ''"
-        @click="cliclmenu('/forecaststorage')"
+        @click="clickmenu('/forecaststorage')"
       >
         货物入库
-      </div>
+      </div> -->
       <!-- <div
         class="aside-item3"
         :class="menuactive == '/bulkstorage' ? 'isactive' : ''"
-        @click="cliclmenu('/bulkstorage')"
+        @click="clickmenu('/bulkstorage')"
       >
         批量入库
       </div> -->
       <div
         class="aside-item3"
         :class="menuactive == '/allrecords' ? 'isactive' : ''"
-        @click="cliclmenu('/allrecords')"
+        @click="clickmenu('/allrecords')"
       >
         入库记录
       </div>
@@ -91,7 +91,7 @@
       <div
         class="aside-item3"
         :class="menuactive == '/recordsbin' ? 'isactive' : ''"
-        @click="cliclmenu('/recordsbin')"
+        @click="clickmenu('/recordsbin')"
       >
         记录回收站
       </div>
@@ -102,28 +102,28 @@
       <div
         class="aside-item3"
         :class="menuactive == '/directorder' ? 'isactive' : ''"
-        @click="cliclmenu('/directorder')"
+        @click="clickmenu('/directorder')"
       >
         直接下单
       </div>
       <div
         class="aside-item3"
         :class="menuactive == '/batchorder' ? 'isactive' : ''"
-        @click="cliclmenu('/batchorder')"
+        @click="clickmenu('/batchorder')"
       >
         批量下单
       </div>
       <div
         class="aside-item3"
         :class="menuactive == '/totalorder' ? 'isactive' : ''"
-        @click="cliclmenu('/totalorder')"
+        @click="clickmenu('/totalorder')"
       >
         全部订单
       </div>
       <div
         class="aside-item3"
         :class="menuactive == '/orderrecycle' ? 'isactive' : ''"
-        @click="cliclmenu('/orderrecycle')"
+        @click="clickmenu('/orderrecycle')"
       >
         订单回收站
       </div>
@@ -140,10 +140,10 @@
         :offset="0"
       >
         <div class="cangkulist">
-          <div class="cangkulistitem" @click="cliclmenu('/returningstock')">
+          <div class="cangkulistitem" @click="clickmenu('/returningstock')">
             退货入库
           </div>
-          <div class="cangkulistitem" @click="cliclmenu('/otherstockrecord')">
+          <div class="cangkulistitem" @click="clickmenu('/otherstockrecord')">
             其他入库记录
           </div>
         </div>
@@ -169,14 +169,14 @@
         :offset="0"
       >
         <div class="cangkulist">
-          <div class="cangkulistitem" @click="cliclmenu('/fbashiping')">
+          <div class="cangkulistitem" @click="clickmenu('/fbashiping')">
             FBA发货
           </div>
-          <div class="cangkulistitem" @click="cliclmenu('/tuning')">调库</div>
-          <div class="cangkulistitem" @click="cliclmenu('/clearinventory')">
+          <div class="cangkulistitem" @click="clickmenu('/tuning')">调库</div>
+          <div class="cangkulistitem" @click="clickmenu('/clearinventory')">
             清理库存
           </div>
-          <div class="cangkulistitem" @click="cliclmenu('/ordershipingrecord')">
+          <div class="cangkulistitem" @click="clickmenu('/ordershipingrecord')">
             其他出库记录
           </div>
         </div>
@@ -200,14 +200,14 @@
       <div
         class="aside-item3"
         :class="menuactive == '/inventoryrecord' ? 'isactive' : ''"
-        @click="cliclmenu('/inventoryrecord')"
+        @click="clickmenu('/inventoryrecord')"
       >
         库存记录
       </div>
       <div
         class="aside-item3"
         :class="menuactive == '/operationflow' ? 'isactive' : ''"
-        @click="cliclmenu('/operationflow')"
+        @click="clickmenu('/operationflow')"
       >
         操作流水
       </div>
@@ -275,13 +275,13 @@
                 <el-table-column label="SKU">
                   <template slot-scope="scope">
                     <div>
-                      <span>{{ ifempty(scope.row.sku) }}</span>
+                      <span>{{ $ifempty(scope.row.sku) }}</span>
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column label="数量">
                   <template slot-scope="scope">
-                    <p>{{ ifempty(scope.row.count) }}</p>
+                    <p>{{ $ifempty(scope.row.count) }}</p>
                   </template>
                 </el-table-column>
                 <el-table-column label="状态" width="100">
@@ -306,7 +306,10 @@
             </div>
           </div>
         </div>
-        <router-view v-if="type == 2"></router-view>
+        <router-view
+          v-if="type == 2"
+          :warehouseactiveId="warehouseactive.id"
+        ></router-view>
       </div>
     </el-main>
     <div class="chartbox animated fadeInUp" v-if="showchartbox && type == 1">
@@ -478,17 +481,17 @@ export default {
   methods: {
     async fetchshoplist() {
       const shoplist = await Axios.fetchGet('/warehouse/listPository')
-      this.warehouselist = shoplist.data.records.map((x) => ({
+      this.warehouselist = shoplist.data.records.map(x => ({
         seller: x.name,
         id: x.id
       }))
     },
-    cliclmenu(path) {
+    clickmenu(path) {
       this.menuactive = path
       this.$router.push(path)
     },
     handlEdeleteSeller(item, index) {},
-    clickseller(item, index) {
+    clickseller(item) {
       this.warehouseactive = item
     },
     handleCurrentChange(val) {},
@@ -562,9 +565,7 @@ export default {
     backwarehouse() {
       this.type = 1
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose(done) {
       done()
     },

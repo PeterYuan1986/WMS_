@@ -2,7 +2,7 @@
   <div>
     <no-page
       :searchForm="filters"
-      :options="options"
+      :options="null"
       @handleFilter="handleFilter"
       @handleCurrentChange="handleCurrentChange"
       @handleBitchDispatch="handleBitchDispatch"
@@ -57,16 +57,16 @@
       </template>
 
       <template v-slot:table-menu-left>
-        <el-radio-group v-model="storageType">
+        <!-- <el-radio-group v-model="storageType">
           <el-radio-button
-            size="small"
+            size="mini"
             label="1"
             class="filter-item"
             type="primary"
             >全部订单
           </el-radio-button>
           <el-radio-button
-            size="small"
+            size="mini"
             label="2"
             class="filter-item"
             type="primary"
@@ -74,14 +74,25 @@
             >预约入库
           </el-radio-button>
           <el-radio-button
-            size="small"
+            size="mini"
             label="3"
             class="filter-item"
             type="primary"
             plain
             >已入库
           </el-radio-button>
-        </el-radio-group>
+        </el-radio-group> -->
+        <el-button-group>
+          <el-button size="mini" class="filter-item" type="primary"
+            >全部订单
+          </el-button>
+          <el-button size="mini" class="filter-item" type="primary" plain
+            >预约入库
+          </el-button>
+          <el-button size="mini" class="filter-item" type="primary" plain
+            >已入库
+          </el-button>
+        </el-button-group>
       </template>
 
       <template v-slot:table>
@@ -91,13 +102,13 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.updateTime) }}</span>
+              <span>{{ $ifempty(scope.row.updateTime) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="对应订单号/批次号">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.batckNumber) }}</p>
+            <p>{{ $ifempty(scope.row.batckNumber) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="状态" width="150">
@@ -110,16 +121,16 @@
         <el-table-column label="物品信息">
           <template slot-scope="scope">
             <div :key="index" v-for="(item, index) in scope.row.goods">
-              <p>SKU：{{ ifempty(item.sku) }}</p>
-              <p>数量：{{ ifempty(item.count) }}</p>
+              <p>SKU：{{ $ifempty(item.sku) }}</p>
+              <p>数量：{{ $ifempty(item.count) }}</p>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="物流信息">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.logistic) }}</p>
-            <p>单 号：{{ ifempty(scope.row.lognumber) }}</p>
-            <!-- <p>配送状态：{{ ifempty(scope.row.name) }}</p> -->
+            <p>配送物流：{{ $ifempty(scope.row.logistic) }}</p>
+            <p>单 号：{{ $ifempty(scope.row.lognumber) }}</p>
+            <!-- <p>配送状态：{{$ifempty(scope.row.name) }}</p> -->
           </template>
         </el-table-column>
         <el-table-column label="操作" width="250">
@@ -131,6 +142,14 @@
               @click="handleReview(scope.row)"
               >查看详情
             </el-button>
+            <!-- <el-button
+              title="入库"
+              type="warning"
+              size="mini"
+              @click="toForecast(scope.row.batckNumber)"
+            >
+              入库
+            </el-button>
             <el-button
               title="更新发货状态"
               type="success"
@@ -139,22 +158,34 @@
               >更新发货状态
             </el-button>
             <el-button
-              title="入库"
-              type="warning"
-              size="mini"
-              @click="toForecast(scope.row.batckNumber)"
-            >
-              入库
-            </el-button>
-
-            <el-button
               title="删除"
               type="danger"
               size="mini"
               @click="handleDelete(scope.row)"
             >
               删除
-            </el-button>
+            </el-button> -->
+            <el-dropdown trigger="click" @command="handleCommand">
+              <span class="el-dropdown-link">
+                <el-button size="mini" style="margin-left: 15px">
+                  更多 <i class="el-icon-caret-bottom el-icon--right"></i
+                ></el-button>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  :command="composeValue('toForecast', scope.row)"
+                  >入库</el-dropdown-item
+                >
+                <el-dropdown-item
+                  :command="composeValue('handleEdit', scope.row)"
+                  >更新发货状态</el-dropdown-item
+                >
+                <el-dropdown-item
+                  :command="composeValue('handleDelete', scope.row)"
+                  >删除</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
           </template>
         </el-table-column>
       </template>
@@ -168,6 +199,7 @@ import axios from '@/https/axios'
 // import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
+  props: ['warehouseactiveId'],
   components: { noPage },
   data() {
     return {
@@ -183,11 +215,25 @@ export default {
       storageType: '1',
       editForm: { name: null, size_unit: '1', width: '' },
       importdialogVisible: false,
-      options: [
+      // options: [
+      //   {
+      //     isDefault: 1,
+      //     value: 'comfirm',
+      //     label: '确认用户修改'
+      //   }
+      // ],
+      buttonList: [
         {
-          isDefault: 1,
-          value: 'comfirm',
-          label: '确认用户修改'
+          label: 1,
+          title: '全部订单'
+        },
+        {
+          label: 2,
+          title: '预约入库'
+        },
+        {
+          label: 3,
+          title: '已入库'
         }
       ]
     }
@@ -203,10 +249,11 @@ export default {
       }
     }
   },
-  beforeMount() {
+  created() {
+    // 拿到当前的仓库id
     this.$store.commit(
       'noPage/setApi',
-      '/warehouse/firstpass/listRecords?positoryId=57ab8fd0f68c0bbbcb401d10b6838088'
+      `/warehouse/firstpass/listRecords?positoryId=${this.warehouseactiveId}`
     )
   },
   methods: {
@@ -215,19 +262,26 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(async (id) => {
+      }).then(async id => {
         await axios.fetchPost(`/biz/firstpass/${row.id}`)
         this.$store.dispatch('noPage/init')
       })
     },
-    toForecast(id) {
-      this.$router.push({ path: '/forecaststorage', query: { id } })
+    composeValue(func, row) {
+      return {
+        func,
+        row
+      }
     },
-    ifempty(value) {
-      return value || '--'
+    handleCommand(command) {
+      const { func, row } = command
+      this[func](row)
     },
+    toForecast(row) {
+      this.$router.push({ path: '/forecaststorage', query: { id: row.id } })
+    },
+
     handleClose() {
-      console.log(1)
       this.$refs.editForm.resetFields()
       this.importdialogVisible = false
     },

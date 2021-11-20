@@ -106,9 +106,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     submitForm() {
       if (this.title === '添加新商品') {
         this.addItem()

@@ -185,34 +185,34 @@
         <el-table-column label="订单号" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="订单详情" width="250">
           <template slot-scope="scope">
-            <p>平台：{{ ifempty(scope.row.name) }}</p>
-            <p>店铺名称：{{ ifempty(scope.row.name) }}</p>
+            <p>平台：{{$ifempty(scope.row.name) }}</p>
+            <p>店铺名称：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="订单明细" width="250">
           <template slot-scope="scope">
-            <p>品名：{{ ifempty(scope.row.name) }}</p>
-            <p>店铺SKU：{{ ifempty(scope.row.name) }}</p>
-            <p>仓库SKU：{{ ifempty(scope.row.name) }}</p>
-            <p>数量：{{ ifempty(scope.row.name) }}</p>
+            <p>品名：{{$ifempty(scope.row.name) }}</p>
+            <p>店铺SKU：{{$ifempty(scope.row.name) }}</p>
+            <p>仓库SKU：{{$ifempty(scope.row.name) }}</p>
+            <p>数量：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人" width="200">
           <template slot-scope="scope">
-            <p>姓名：{{ ifempty(scope.row.name) }}</p>
-            <p>地址：{{ ifempty(scope.row.name) }}</p>
+            <p>姓名：{{$ifempty(scope.row.name) }}</p>
+            <p>地址：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="发货物流信息" width="250">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.name) }}</p>
-            <p>单号：{{ ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.name) }}</p>
+            <p>单号：{{$ifempty(scope.row.name) }}</p>
             <p>
               配送状态：
               <strong class="statu0" v-if="scope.row.statu == 0">待发货</strong>
@@ -226,14 +226,14 @@
         </el-table-column>
         <el-table-column label="发货仓库" width="200">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作日期" width="250">
           <template slot-scope="scope">
-            <p>创建日期：{{ ifempty(scope.row.name) }}</p>
-            <p>分配日期：{{ ifempty(scope.row.name) }}</p>
-            <p>发货日期：{{ ifempty(scope.row.name) }}</p>
+            <p>创建日期：{{$ifempty(scope.row.name) }}</p>
+            <p>分配日期：{{$ifempty(scope.row.name) }}</p>
+            <p>发货日期：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="240">
@@ -291,33 +291,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="数量" width="80">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人信息">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="280">
@@ -371,33 +371,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="已发数量" width="80">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人信息">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物流追踪码">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="发货时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="货物状态" width="80">
@@ -459,33 +459,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="退单数量" width="80">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="退单时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="80">
@@ -525,33 +525,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="完成数量" width="80">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="发货时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="到货时间">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="货物状态" width="80">
@@ -748,18 +748,18 @@
           <el-table-column label="SKU" width="120">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.sku) }}</span>
+                <span>{{$ifempty(scope.row.sku) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <p>{{ ifempty(scope.row.name) }}</p>
+              <p>{{$ifempty(scope.row.name) }}</p>
             </template>
           </el-table-column>
           <el-table-column label="应发数量" width="80">
             <template slot-scope="scope">
-              <p>{{ ifempty(scope.row.ycount) }}</p>
+              <p>{{$ifempty(scope.row.ycount) }}</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -769,7 +769,7 @@
             v-if="yifastatu == 2"
           >
             <template slot-scope="scope">
-              <p>{{ ifempty(scope.row.scount) }}</p>
+              <p>{{$ifempty(scope.row.scount) }}</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -1002,9 +1002,7 @@ export default {
     handleBuyClick() {
       this.dialogVisible = true
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     handleimport() {

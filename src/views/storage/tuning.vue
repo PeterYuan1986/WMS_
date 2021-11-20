@@ -72,30 +72,30 @@
           <el-table-column label="参考码" width="300px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.code) }}</span>
+                <span>{{$ifempty(scope.row.code) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="包裹数" width="150px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.count) }}</span>
+                <span>{{$ifempty(scope.row.count) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="包裹信息">
             <template slot-scope="scope">
               <div>
-                <p>单个包裹尺寸：{{ ifempty(scope.row.size) }}</p>
-                <p>增值服务：{{ ifempty(scope.row.serve) }}</p>
-                <p>包裹处理费：{{ ifempty(scope.row.deal) }}</p>
+                <p>单个包裹尺寸：{{$ifempty(scope.row.size) }}</p>
+                <p>增值服务：{{$ifempty(scope.row.serve) }}</p>
+                <p>包裹处理费：{{$ifempty(scope.row.deal) }}</p>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="费用" width="150px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.price) }}</span>
+                <span>{{$ifempty(scope.row.price) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -528,9 +528,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleRemove(file, fileList) {
       console.log(file, fileList)
     },

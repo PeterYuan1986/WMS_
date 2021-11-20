@@ -57,7 +57,7 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.rid) }}</span>
+              <span>{{$ifempty(scope.row.rid) }}</span>
             </div>
           </template>
         </el-table-column>
@@ -65,7 +65,7 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.selsku) }}</span>
+              <span>{{$ifempty(scope.row.selsku) }}</span>
               <el-popover
                 placement="right-start"
                 title=""
@@ -89,27 +89,27 @@
         </el-table-column>
         <el-table-column label="仓库名">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="地址" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="类型" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="面积">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="星级">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="150">
@@ -149,13 +149,13 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.rid) }}</span>
+              <span>{{$ifempty(scope.row.rid) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="仓库SKU" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.stksku) }}</span>
+            <span>{{$ifempty(scope.row.stksku) }}</span>
             <el-popover
               placement="right-start"
               title=""
@@ -180,28 +180,28 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.selsku) }}</span>
+              <span>{{$ifempty(scope.row.selsku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="尺寸">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="200">
@@ -644,9 +644,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

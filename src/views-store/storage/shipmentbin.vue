@@ -86,31 +86,31 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.date) }}</span>
+              <span>{{$ifempty(scope.row.date) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="入库码">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.instockcode) }}</p>
+            <p>{{$ifempty(scope.row.instockcode) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="执行">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.operation) }}</p>
+            <p>{{$ifempty(scope.row.operation) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物品信息">
           <template slot-scope="scope">
-            <p>SKU：{{ ifempty(scope.row.name) }}</p>
-            <p>数量：{{ ifempty(scope.row.name) }}</p>
+            <p>SKU：{{$ifempty(scope.row.name) }}</p>
+            <p>数量：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物流信息">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.name) }}</p>
-            <p>单 号：{{ ifempty(scope.row.name) }}</p>
-            <p>配送状态：{{ ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.name) }}</p>
+            <p>单 号：{{$ifempty(scope.row.name) }}</p>
+            <p>配送状态：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="状态" width="150">
@@ -177,21 +177,21 @@
     >
       <div v-if="editable == 0">
         <el-form v-model="reviewDetail" ref="reviewDetail">
-          <strong>退货日期：</strong>{{ ifempty(reviewDetail.date) }}<br />
-          <strong>退货单号：</strong>{{ ifempty(reviewDetail.returningcode)
+          <strong>退货日期：</strong>{{$ifempty(reviewDetail.date) }}<br />
+          <strong>退货单号：</strong>{{$ifempty(reviewDetail.returningcode)
           }}<br />
-          <strong>物品信息：</strong>{{ ifempty(reviewDetail.iteminfo) }}<br />
-          <strong>数量：</strong>{{ ifempty(reviewDetail.count) }}<br />
-          <strong>入库码：</strong>{{ ifempty(reviewDetail.instockcode) }}<br />
-          <strong>卖家备注：</strong>{{ ifempty(reviewDetail.note) }}<br />
-          <strong>仓库说明：</strong>{{ ifempty(reviewDetail.warehousenote)
+          <strong>物品信息：</strong>{{$ifempty(reviewDetail.iteminfo) }}<br />
+          <strong>数量：</strong>{{$ifempty(reviewDetail.count) }}<br />
+          <strong>入库码：</strong>{{$ifempty(reviewDetail.instockcode) }}<br />
+          <strong>卖家备注：</strong>{{$ifempty(reviewDetail.note) }}<br />
+          <strong>仓库说明：</strong>{{$ifempty(reviewDetail.warehousenote)
           }}<br />
         </el-form>
       </div>
       <div v-else-if="editable == 1">
         <el-form v-model="reviewDetail" ref="reviewDetail">
-          <strong>退货日期：</strong>{{ ifempty(reviewDetail.date) }}<br />
-          <strong>退货单号：</strong>{{ ifempty(reviewDetail.returningcode)
+          <strong>退货日期：</strong>{{$ifempty(reviewDetail.date) }}<br />
+          <strong>退货单号：</strong>{{$ifempty(reviewDetail.returningcode)
           }}<br />
           <el-form-item style="margin-top: 10px; margin-bottom: 0px" label="物品信息">
             <el-input
@@ -350,9 +350,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

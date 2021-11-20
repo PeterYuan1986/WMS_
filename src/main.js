@@ -26,6 +26,10 @@ Vue.prototype.$handleResError = function(res) {
   }
 }
 
+Vue.prototype.$ifempty = (value) => {
+  return value || '--'
+}
+
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.component(CollapseTransition.name, CollapseTransition)

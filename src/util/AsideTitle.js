@@ -12,15 +12,8 @@ export const AsideTitles = [
   },
   {
     title: '仓库管理',
-    path: '/warehouse',
-    icon: 'icon-xingzhuang102',
-    onlyStorage: true
-  },
-  {
-    title: '仓库管理',
     path: '/storages',
-    icon: 'icon-xingzhuang102',
-    onlySeller: true
+    icon: 'icon-xingzhuang102'
   },
   {
     title: '订单管理',

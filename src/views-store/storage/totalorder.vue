@@ -123,39 +123,39 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="发件人信息">
           <template slot-scope="scope">
-            <p>仓库：{{ ifempty(scope.row.name) }}</p>
-            <p>地址：{{ ifempty(scope.row.name) }}</p>
+            <p>仓库：{{$ifempty(scope.row.name) }}</p>
+            <p>地址：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人信息">
           <template slot-scope="scope">
-            <p>姓名：{{ ifempty(scope.row.name) }}</p>
-            <p>地址：{{ ifempty(scope.row.name) }}</p>
+            <p>姓名：{{$ifempty(scope.row.name) }}</p>
+            <p>地址：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物流信息">
           <template slot-scope="scope">
-            <p>配送物流：{{ ifempty(scope.row.name) }}</p>
-            <p>单 号：{{ ifempty(scope.row.name) }}</p>
-            <p>配送状态：{{ ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{$ifempty(scope.row.name) }}</p>
+            <p>单 号：{{$ifempty(scope.row.name) }}</p>
+            <p>配送状态：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作日期">
           <template slot-scope="scope">
-            <p>订单创建日期：{{ ifempty(scope.row.name) }}</p>
-            <p>label打印日期：{{ ifempty(scope.row.name) }}</p>
-            <p>发货日期：{{ ifempty(scope.row.name) }}</p>
+            <p>订单创建日期：{{$ifempty(scope.row.name) }}</p>
+            <p>label打印日期：{{$ifempty(scope.row.name) }}</p>
+            <p>发货日期：{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="打印次数" width="80">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.desc) }}</span>
+            <span>{{$ifempty(scope.row.desc) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="230">
@@ -316,9 +316,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

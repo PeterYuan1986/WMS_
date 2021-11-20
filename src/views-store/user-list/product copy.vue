@@ -76,7 +76,7 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.openid) }}</span>
+              <span>{{$ifempty(scope.row.openid) }}</span>
             </div>
           </template>
         </el-table-column>
@@ -84,7 +84,7 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.selsku) }}</span>
+              <span>{{$ifempty(scope.row.selsku) }}</span>
               <el-popover
                 placement="right-start"
                 title=""
@@ -108,26 +108,26 @@
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="尺寸 (长宽高/单位)">
           <template slot-scope="scope">
             <span
-              >{{ ifempty(scope.row.width) }}、{{
-                ifempty(scope.row.length)
-              }}、{{ ifempty(scope.row.height) }} ({{
-                ifempty(scope.row.weight_unit)
+              >{{$ifempty(scope.row.width) }}、{{
+               $ifempty(scope.row.length)
+              }}、{{$ifempty(scope.row.height) }} ({{
+               $ifempty(scope.row.weight_unit)
               }})</span
             >
           </template>
@@ -169,13 +169,13 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.rid) }}</span>
+              <span>{{$ifempty(scope.row.rid) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="仓库SKU" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.stksku) }}</span>
+            <span>{{$ifempty(scope.row.stksku) }}</span>
             <el-popover
               placement="right-start"
               title=""
@@ -200,28 +200,28 @@
           <template slot-scope="scope">
             <div>
               <img src="" alt="" />
-              <span>{{ ifempty(scope.row.selsku) }}</span>
+              <span>{{$ifempty(scope.row.selsku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="尺寸">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="200">
@@ -681,9 +681,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     submitForm() {
       if (this.title === '添加新商品') {
         this.addItem()

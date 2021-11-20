@@ -87,9 +87,7 @@ export default {
       this.menuactive = path
       this.$router.push(path)
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

@@ -79,32 +79,32 @@
         </el-table-column>
         <el-table-column label="SKU">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="品名">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="单位重量">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="体积">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="当前数量">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="预报入库">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="250">
@@ -261,9 +261,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

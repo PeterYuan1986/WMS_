@@ -1,18 +1,6 @@
-/**
-
-/api/warehouse/firstpass/forecast 入库
-enum type{
-  "包裹入库"： false 不传
-  "SKU入库"： true
-}
-
-/api/biz/firstpass/{id}入库记录详情
-goods 仓库填的货物入库
-
-packs 卖家填写的预报信息
-
-SKU入库，包裹packs中 goods*services 展示服务
-  */
+/** /api/warehouse/firstpass/forecast 入库 enum type{ "包裹入库"： false 不传
+"SKU入库"： true } /api/biz/firstpass/{id}入库记录详情 goods 仓库填的货物入库
+packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展示服务 */
 
 <template>
   <div class="forecaststorage-container">
@@ -56,7 +44,7 @@ SKU入库，包裹packs中 goods*services 展示服务
           <el-table-column label="参考码" width="300px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.barcode) }}</span>
+                <span>{{ $ifempty(scope.row.id) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -75,18 +63,18 @@ SKU入库，包裹packs中 goods*services 展示服务
                 </p>
                 <p>
                   增值服务：{{
-                    ifempty(
+                    $ifempty(
                       scope.row.goods
                         .reduce((a, b) => {
-                          return [...a, ...b.services.map((x) => x.title)]
+                          return [...a, ...b.services.map(x => x.title)]
                         }, [])
                         .join('')
                     )
                   }}
                 </p>
-                <p>
+                <!-- <p>
                   包裹处理费：{{
-                    ifempty(
+                   $ifempty(
                       scope.row.goods.reduce((a, b) => {
                         return (
                           a +
@@ -97,14 +85,14 @@ SKU入库，包裹packs中 goods*services 展示服务
                       }, 0)
                     )
                   }}
-                </p>
+                </p> -->
               </div>
             </template>
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.desc) }}</span>
+                <span>{{ $ifempty(scope.row.desc) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -157,7 +145,7 @@ SKU入库，包裹packs中 goods*services 展示服务
           <el-table-column label="参考码" width="300px">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.barcode) }}</span>
+                <span>{{ $ifempty(scope.row.id) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -171,10 +159,10 @@ SKU入库，包裹packs中 goods*services 展示服务
                 </p>
                 <p>
                   增值服务：{{
-                    ifempty(
+                    $ifempty(
                       scope.row.goods
                         .reduce((a, b) => {
-                          return [...a, ...b.services.map((x) => x.title)]
+                          return [...a, ...b.services.map(x => x.title)]
                         }, [])
                         .join('')
                     )
@@ -185,12 +173,10 @@ SKU入库，包裹packs中 goods*services 展示服务
           </el-table-column>
           <el-table-column label="实收包裹数">
             <template slot-scope="scope">
-              <el-form-item
-                :prop="'storageFrom.packs.' + scope.$index + '.realCount'"
-              >
+              <el-form-item>
                 <el-input
                   v-model.number="scope.row.realCount"
-                  style="width: 100%"
+                  style="width: 100px"
                 ></el-input>
               </el-form-item>
             </template>
@@ -221,33 +207,23 @@ SKU入库，包裹packs中 goods*services 展示服务
         >
           <el-table-column label="SKU" width="300px">
             <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.sku'"
-              >
-                <el-input v-model="scope.row.sku"> </el-input>
+              <el-form-item style="margin: 0">
+                <span v-if="scope.row.disabled">{{ scope.row.sku }}</span>
+                <el-input v-model="scope.row.sku" v-else> </el-input>
               </el-form-item>
-              <!-- <div>
-              <span>{{ ifempty(scope.row.code) }}</span>
-            </div> -->
             </template>
           </el-table-column>
           <el-table-column label="数目" width="150px">
             <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.number'"
-              >
-                <el-input v-model="scope.row.number"> </el-input>
+              <el-form-item style="margin: 0">
+                <span v-if="scope.row.disabled">{{ scope.row.number }}</span>
+                <el-input v-model="scope.row.number" v-else> </el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="实收数目" width="275px">
             <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.count'"
-              >
+              <el-form-item style="margin: 0">
                 <el-input v-model="scope.row.count"> </el-input>
               </el-form-item>
             </template>
@@ -288,35 +264,25 @@ SKU入库，包裹packs中 goods*services 展示服务
           border
           class="product-table"
         >
-          <el-table-column label="SKU" width="300px">
+          <el-table-column label="SKU" width="200px">
             <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.sku'"
-              >
-                <el-input v-model="scope.row.sku"> </el-input>
+              <el-form-item style="margin: 0">
+                <el-input v-model="scope.row.sku"></el-input>
               </el-form-item>
-              <!-- <div>
-              <span>{{ ifempty(scope.row.code) }}</span>
-            </div> -->
             </template>
           </el-table-column>
-          <!-- <el-table-column label="数目" width="150px">
+          <el-table-column label="数目" width="150px">
             <template slot-scope="scope">
               <el-form-item
                 style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.number'"
               >
                 <el-input v-model="scope.row.number"> </el-input>
               </el-form-item>
             </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column label="实收数目" width="275px">
             <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-                :prop="'storageFrom.skuList.' + scope.$index + '.count'"
-              >
+              <el-form-item style="margin: 0">
                 <el-input v-model="scope.row.count"> </el-input>
               </el-form-item>
             </template>
@@ -418,21 +384,6 @@ export default {
       },
       packageRules: {},
       serviceList: {},
-      cangkus: [
-        { label: '仓库1', value: '1' },
-        { label: '仓库2', value: '4' }
-      ],
-      fileList: [],
-      list: [
-        {
-          code: 'BHKFDSDSKFFHD',
-          count: 300,
-          size: '8KU001*100',
-          serve: '商品贴标$0.2/个',
-          deal: '$2/包裹',
-          price: 100
-        }
-      ],
       dialogVisible: false,
       products: [],
       service: new Set()
@@ -456,14 +407,17 @@ export default {
         const skuList = this.skuRecords.split('\n')
         this.showSkuRecordDetail = true
         const obj = {}
-        skuList.forEach((x) => {
-          if (obj[x]) {
-            obj[x] += 1
-          } else {
-            obj[x] = 1
-          }
-        })
-        this.storageFrom.skuList = Object.keys(obj).map((x) => ({
+        skuList
+          .filter(x => !!x)
+          .map(x => x.trim().toLocaleLowerCase())
+          .forEach(x => {
+            if (obj[x]) {
+              obj[x] += 1
+            } else {
+              obj[x] = 1
+            }
+          })
+        this.storageFrom.skuList = Object.keys(obj).map(x => ({
           sku: x,
           number: obj[x],
           count: obj[x]
@@ -480,8 +434,8 @@ export default {
           sums[index] = '总计包裹:'
           return
         }
-        const values = data.map((item) => Number(item[column.property]))
-        if (!values.every((value) => isNaN(value))) {
+        const values = data.map(item => Number(item[column.property]))
+        if (!values.every(value => isNaN(value))) {
           sums[index] = values.reduce((prev, curr) => {
             const value = Number(curr)
             if (!isNaN(value)) {
@@ -518,33 +472,34 @@ export default {
       })
       return false
     },
-    handleSuccess({ results, header }) {
+    handleSuccess({ results }) {
       this.storageFrom.skuList = results
-      // this.tableHeader = header
     },
     async getItem() {
       if (this.id) {
         const item = await Axios.fetchGet(`/biz/firstpass/${this.id}`)
-        console.log(this.packageList)
         this.storageFrom = item.data
         this.storageFrom.skuList = []
-        console.log(this.storageFrom.packs, 'packs')
-        this.storageFrom.packs.forEach((x) => {
-          x.goods.forEach((item) => {
+        this.storageFrom.packs.forEach(x => {
+          x.goods.forEach(item => {
             this.packageList[item.sku] = this.packageList[item.sku] || 0
             this.packageList[item.sku] += x.count * item.count
             if (item.services && item.services.length) {
-              item.services.forEach((i) => {
+              item.services.forEach(i => {
                 this.serviceList[i.title] = i.unitprice + '|' + i.id
               })
             }
+            // 渲染默认的sku
+            this.storageFrom.skuList.push({
+              sku: item.sku,
+              number: x.count * item.count,
+              count: '',
+              disabled: true
+            })
+            this.skuRecords += item.sku + '\n'
           })
         })
-        console.log(this.serviceList, 'serviceList')
       }
-    },
-    ifempty(value) {
-      return value || '--'
     },
     handleSkuAdd() {
       this.storageFrom.skuList.push([])
@@ -563,31 +518,36 @@ export default {
         }
       ).then(() => {
         let goods = []
+        console.log(this.datetype)
         if (this.datetype === '1') {
-          goods = this.storageFrom.packs.map((x) => ({
+          goods = this.storageFrom.packs.map(x => ({
             count: x.realCount,
             id: x.id,
             services: [...this.service],
             sku: x.sku
           }))
         } else {
-          goods = this.storageFrom.skuList.map((x) => ({
+          goods = this.storageFrom.skuList.map(x => ({
             count: x.count,
-            id: x.id,
+            id: Number(x.id),
             services: [...this.service],
             sku: x.sku
           }))
         }
+        console.log(goods, 'goods', this.service)
+        console.log(this.storageFrom.packs, this.storageFrom.skuList, goods)
         Axios.fetchPost('/warehouse/firstpass/forecast', {
           goodType: true,
           goods,
-          id: this.id,
-          packs: this.storageFrom.packs.map((x) => ({
+          id: Number(this.id),
+          packs: this.storageFrom.packs.map(x => ({
             count: x.count,
-            id: x.id,
+            id: Number(x.id),
             services: [...this.service]
           })),
           type: true
+        }).then(res => {
+          console.log(res)
         })
       })
     }

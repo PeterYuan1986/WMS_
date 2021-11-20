@@ -18,7 +18,7 @@
           <el-table-column label="收费项目（USD）" align="center">
             <template slot-scope="scope">
               <div>
-                <span>{{ ifempty(scope.row.title) }}</span>
+                <span>{{$ifempty(scope.row.title) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -26,7 +26,7 @@
           <el-table-column label="价格" align="center">
             <template slot-scope="scope">
               <div>
-                <span>${{ ifempty(scope.row.unitprice) }}</span>
+                <span>${{$ifempty(scope.row.unitprice) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -106,9 +106,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleDelete(title, row, index) {
       this.$emit('delete', title, row, index)
     },

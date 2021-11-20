@@ -95,23 +95,23 @@
         <el-table-column label="卖家名" width="175">
           <template slot-scope="scope">
             <el-button type="text" @click="handleDrawerClick(scope.row)">
-              {{ ifempty(scope.row.email) }}
+              {{$ifempty(scope.row.email) }}
             </el-button>
           </template>
         </el-table-column>
         <el-table-column label="公司名" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.company) }}</span>
+            <span>{{$ifempty(scope.row.company) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="日发货包裹数量" width="130">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.weight) }}</span>
+            <span>{{$ifempty(scope.row.weight) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="所需面积">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.size) }}</span>
+            <span>{{$ifempty(scope.row.size) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="星级" width="180">
@@ -354,9 +354,7 @@ export default {
       this.searchdialogVisible = false
       console.log(res)
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleSearch() {
       console.log('添加')
     },

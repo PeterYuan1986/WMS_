@@ -81,38 +81,38 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="单位重量">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="体积(inch)">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="当前数量">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="所属卖家">
           <template slot-scope="scope">
-            <p>{{ ifempty(scope.row.name) }}</p>
+            <p>{{$ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="所在位置" width="80">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.desc) }}</span>
+            <span>{{$ifempty(scope.row.desc) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="230">
@@ -316,9 +316,7 @@ export default {
     }
   },
   methods: {
-    ifempty(value) {
-      return value || '--'
-    },
+
     getlist() {},
     handleFilter() {},
     searchReset() {},

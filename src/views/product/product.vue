@@ -58,7 +58,7 @@
         <el-table-column label="卖家SKU">
           <template slot-scope="scope">
             <div>
-              <span>{{ ifempty(scope.row.sku) }}</span>
+              <span>{{$ifempty(scope.row.sku) }}</span>
               <!-- <el-popover
                 placement="right-start"
                 title=""
@@ -88,7 +88,7 @@
         <el-table-column label="店铺SKU">
           <template slot-scope="scope">
             <span>{{
-              ifempty(
+             $ifempty(
                 get(scope, 'row.shopInfos', [])
                   .map(x => x.shop_sku)
                   .join(',')
@@ -98,18 +98,18 @@
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.name) }}</span>
+            <span>{{$ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.unit) }}</span>
+            <span>{{$ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
             <span
-              >{{ ifempty(scope.row.weight) }} /
+              >{{$ifempty(scope.row.weight) }} /
               {{ scope.row.weight && scope.row.weight_unit }}</span
             >
           </template>
@@ -118,22 +118,22 @@
         <el-table-column label="尺寸">
           <template slot-scope="scope">
             <p>
-              长： {{ ifempty(scope.row.length) }}
-              {{ ifempty(scope.row.size_unit) }}
+              长： {{$ifempty(scope.row.length) }}
+              {{$ifempty(scope.row.size_unit) }}
             </p>
             <p>
-              宽： {{ ifempty(scope.row.width) }}
-              {{ ifempty(scope.row.size_unit) }}
+              宽： {{$ifempty(scope.row.width) }}
+              {{$ifempty(scope.row.size_unit) }}
             </p>
             <p>
-              高：{{ ifempty(scope.row.height) }}
-              {{ ifempty(scope.row.size_unit) }}
+              高：{{$ifempty(scope.row.height) }}
+              {{$ifempty(scope.row.size_unit) }}
             </p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <span>{{ ifempty(scope.row.notes) }}</span>
+            <span>{{$ifempty(scope.row.notes) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="150">
@@ -381,9 +381,7 @@ export default {
       this.title = '添加新商品'
       this.dialogVisible = true
     },
-    ifempty(value) {
-      return value || '--'
-    },
+
     handleClose(done) {
       done()
     },

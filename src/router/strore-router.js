@@ -33,149 +33,153 @@ import Ht from '../views-store/sys/ht.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
-  path: '/',
-  redirect: '/login'
-},
-{
-  path: '/login',
-  name: '登录',
-  component: Login
-},
-{
-  path: '/dashhome',
-  name: '首页',
-  component: Dashboard,
-  children: [{
-    path: '/dashboard',
-    name: '数据报表',
-    component: Dashhome
+const routes = [
+  {
+    path: '/',
+    redirect: '/login'
   },
   {
-    path: '/user-list',
-    name: '用户列表',
-    component: UserList
+    path: '/login',
+    name: '登录',
+    component: Login
   },
   {
-    path: '/product-store',
-    name: '产品信息(仓库)',
-    component: ProductStore
-  },
-  {
-    path: '/storages',
-    name: '仓库管理',
-    component: Storages,
-    // redirect: '/storagedashboard',
-    children: [{
-      path: '/sproduct',
-      name: '仓库商品信息',
-      component: ProductStore
-    },
-    {
-      path: '/storagedashboard',
-      name: '数据报表',
-      component: Dashhome
-    },
-    {
-      path: '/forecaststorage',
-      name: '预报入库',
-      component: forecaststorage
-    },
-    {
-      path: '/bulkstorage',
-      name: '批量入库',
-      component: bulkstorage
-    },
-    {
-      path: '/allrecords',
-      name: '全部记录',
-      component: allrecords
-    },
-    {
-      path: '/recordsbin',
-      name: '记录回收站',
-      component: recordsbin
-    },
-    {
-      path: '/otherstockrecord',
-      name: '其他入库记录',
-      component: returningbin
-    },
-    {
-      path: '/ordershipingrecord',
-      name: '其他出库记录',
-      component: shipmentbin
-    },
-    {
-      path: '/directorder',
-      name: '直接下单',
-      component: directorder
-    },
-    {
-      path: '/returningstock',
-      name: '直接下单',
-      component: returningstock
-    },
-    {
-      path: '/batchorder',
-      name: '批量下单',
-      component: batchorder
-    },
-    {
-      path: '/totalorder',
-      name: '全部订单',
-      component: totalorder
-    },
-    {
-      path: '/orderrecycle',
-      name: '订单回收站',
-      component: orderrecycle
-    },
-    {
-      path: '/fbashiping',
-      name: 'FBA发货',
-      component: fbashiping
-    },
-    {
-      path: '/tuning',
-      name: '调库',
-      component: tuning
-    },
-    {
-      path: '/clearinventory',
-      name: '清理库存',
-      component: clearinventory
-    },
-    {
-      path: '/inventoryrecord',
-      name: '库存记录',
-      component: inventoryrecord
-    },
-    {
-      path: '/operationflow',
-      name: '操作流水',
-      component: operationflow
-    }
-    ]
-  },
-  {
-    path: '/sys',
-    name: '系统设置 > 仓库信息',
-    component: sys,
-    children: [{
-      path: '/store-info',
-      name: '我的仓库',
-      component: StoreInfo
-    },
-    {
-      path: '/ht',
-      name: '合同条款',
-      component: Ht
-    }
+    path: '/dashhome',
+    name: '首页',
+    component: Dashboard,
+    children: [
+      {
+        path: '/dashboard',
+        name: '数据报表',
+        component: Dashhome
+      },
+      {
+        path: '/user-list',
+        name: '用户列表',
+        component: UserList
+      },
+      {
+        path: '/product-store',
+        name: '产品信息(仓库)',
+        component: ProductStore
+      },
+      {
+        path: '/storages',
+        name: '仓库管理',
+        component: Storages,
+        redirect: '/storagedashboard',
+        children: [
+          {
+            path: '/storagedashboard',
+            name: '数据报表',
+            component: Dashhome
+          },
+          {
+            path: '/forecaststorage',
+            name: '预报入库',
+            component: forecaststorage
+          },
+          {
+            path: '/bulkstorage',
+            name: '批量入库',
+            component: bulkstorage
+          },
+          {
+            path: '/allrecords',
+            name: '全部记录',
+            component: allrecords
+          },
+          {
+            path: '/recordsbin',
+            name: '记录回收站',
+            component: recordsbin
+          },
+          {
+            path: '/otherstockrecord',
+            name: '其他入库记录',
+            component: returningbin
+          },
+          {
+            path: '/ordershipingrecord',
+            name: '其他出库记录',
+            component: shipmentbin
+          },
+          {
+            path: '/directorder',
+            name: '直接下单',
+            component: directorder
+          },
+          {
+            path: '/returningstock',
+            name: '直接下单',
+            component: returningstock
+          },
+          {
+            path: '/batchorder',
+            name: '批量下单',
+            component: batchorder
+          },
+          {
+            path: '/totalorder',
+            name: '全部订单',
+            component: totalorder
+          },
+          {
+            path: '/orderrecycle',
+            name: '订单回收站',
+            component: orderrecycle
+          },
+          {
+            path: '/fbashiping',
+            name: 'FBA发货',
+            component: fbashiping
+          },
+          {
+            path: '/tuning',
+            name: '调库',
+            component: tuning
+          },
+          {
+            path: '/clearinventory',
+            name: '清理库存',
+            component: clearinventory
+          },
+          {
+            path: '/inventoryrecord',
+            name: '库存记录',
+            component: inventoryrecord
+          },
+          {
+            path: '/operationflow',
+            name: '操作流水',
+            component: operationflow
+          }
+        ]
+      },
+      {
+        path: '/product',
+        name: '商品信息',
+        component: ProductStore
+      },
+      {
+        path: '/sys',
+        name: '系统设置 > 仓库信息',
+        component: sys,
+        children: [
+          {
+            path: '/store-info',
+            name: '我的仓库',
+            component: StoreInfo
+          },
+          {
+            path: '/ht',
+            name: '合同条款',
+            component: Ht
+          }
+        ]
+      }
     ]
   }
-  ]
-}
 ]
 // const routesForStore = [{
 //   path: '/',
