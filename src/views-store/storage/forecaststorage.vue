@@ -1,7 +1,3 @@
-/** /api/warehouse/firstpass/forecast 入库 enum type{ "包裹入库"： false 不传
-"SKU入库"： true } /api/biz/firstpass/{id}入库记录详情 goods 仓库填的货物入库
-packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展示服务 */
-
 <template>
   <div class="forecaststorage-container">
     <el-form
@@ -21,14 +17,6 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
           style="width: 100%; margin-top: 10px"
         >
           <span v-if="id">{{ id }}</span>
-          <el-select v-else placeholder size="small">
-            <el-option
-              v-for="(item, index) in products"
-              :key="index"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
         </el-form-item>
       </div>
       <div style="padding-bottom: 20px">
@@ -127,13 +115,14 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
       </div>
       <br />
       <el-form-item prop="warsehouse" style="width: 100%">
-        <el-radio-group size="small" v-model="radio1">
-          <el-radio-button :label="1">按包裹数目入库</el-radio-button>
-          <el-radio-button :label="2">按SKU入库</el-radio-button>
+        <el-radio-group size="small" v-model="packType">
+          <el-radio-button :label="false">按包裹数目入库</el-radio-button>
+          <el-radio-button :label="true">按SKU入库</el-radio-button>
         </el-radio-group>
       </el-form-item>
 
-      <div v-if="radio1 === 1">
+      <!-- 按照包裹入库 packType: false-->
+      <div v-if="!packType">
         <el-table
           :data="storageFrom.packs"
           border
@@ -183,16 +172,17 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
           </el-table-column>
         </el-table>
       </div>
-      <div v-if="radio1 === 2">
-        <el-radio label="1" v-model="datetype">手动入库</el-radio>
-        <el-radio label="2" v-model="datetype">扫描入库</el-radio>
+      <!-- 按照sku入库 -->
+      <div v-else>
+        <el-radio :label="false" v-model="goodType">手动入库</el-radio>
+        <el-radio :label="true" v-model="goodType">扫描入库</el-radio>
 
         <el-button
           type="primary"
           style="float: right; margin: 0 20px 10px 0"
           @click="handleSkuAdd"
           size="small"
-          v-if="datetype === '1'"
+          v-if="!goodType"
           icon=" icon iconfont icon-jia"
           >添加SKU</el-button
         >
@@ -200,7 +190,7 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
         <br />
 
         <el-table
-          v-if="datetype === '1'"
+          v-if="storageFrom.skuList.length || showSkuRecordDetail"
           :data="storageFrom.skuList"
           border
           class="product-table"
@@ -208,16 +198,32 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
           <el-table-column label="SKU" width="300px">
             <template slot-scope="scope">
               <el-form-item style="margin: 0">
-                <span v-if="scope.row.disabled">{{ scope.row.sku }}</span>
-                <el-input v-model="scope.row.sku" v-else> </el-input>
+                <div v-if="scope.row.disabled">{{ scope.row.sku }}</div>
+                <!-- products -->
+                <el-select
+                  v-else
+                  v-model="scope.row.sku"
+                  size="small"
+                  @change="
+                    val => {
+                      selectedItemSku(val, scope)
+                    }
+                  "
+                >
+                  <el-option
+                    v-for="item in products"
+                    :key="item.id"
+                    :label="item.sku"
+                    :value="item.sku"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="数目" width="150px">
             <template slot-scope="scope">
               <el-form-item style="margin: 0">
-                <span v-if="scope.row.disabled">{{ scope.row.number }}</span>
-                <el-input v-model="scope.row.number" v-else> </el-input>
+                <span>{{ scope.row.number || 0 }}</span>
               </el-form-item>
             </template>
           </el-table-column>
@@ -232,16 +238,16 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
             <template slot-scope="scope">
               <el-button
                 type="warning"
-                @click="handleDeleteSku(scope.$index)"
+                @click="handleDeleteSku(scope)"
                 size="small"
                 >删除</el-button
               >
             </template>
           </el-table-column>
         </el-table>
-
+        <br />
         <el-input
-          v-if="datetype === '2' && !showSkuRecordDetail"
+          v-if="goodType && !showSkuRecordDetail"
           type="textarea"
           style="width: 60%"
           v-model="skuRecords"
@@ -252,84 +258,43 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
           <el-button
             type="primary"
             size="medium"
-            v-if="datetype === '2'"
+            v-if="goodType"
             @click="handleSkuRecords"
             >{{ showSkuRecordDetail ? '编辑' : '确认' }}</el-button
           >
         </div>
-
-        <el-table
-          v-if="showSkuRecordDetail === true"
-          :data="storageFrom.skuList"
-          border
-          class="product-table"
-        >
-          <el-table-column label="SKU" width="200px">
-            <template slot-scope="scope">
-              <el-form-item style="margin: 0">
-                <el-input v-model="scope.row.sku"></el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="数目" width="150px">
-            <template slot-scope="scope">
-              <el-form-item
-                style="margin: 0"
-              >
-                <el-input v-model="scope.row.number"> </el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="实收数目" width="275px">
-            <template slot-scope="scope">
-              <el-form-item style="margin: 0">
-                <el-input v-model="scope.row.count"> </el-input>
-              </el-form-item>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template slot-scope="scope">
-              <el-button
-                type="warning"
-                @click="handleDeleteSku(scope.$index)"
-                size="small"
-                >删除</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
         <br />
       </div>
 
-      <!-- <el-button type="primary">确认</el-button> -->
       <br />
       <br />
 
-      <div class="title">
-        <i class="fa fa-bookmark"></i>
-        <p>服务</p>
+      <div v-for="sku in Object.keys(skuListForServiceIdObj)" :key="sku">
+        <p class="table-header">sku: {{ sku }}</p>
+        <el-row type="flex">
+          <el-col
+            :span="8"
+            class="table-header"
+            :key="index"
+            v-for="(item, index) in serviceList"
+          >
+            <el-row type="flex">
+              <el-col>
+                <el-checkbox-group
+                  v-model="skuListForServiceIdObj[sku]"
+                  @change="$forceUpdate()"
+                >
+                  <el-checkbox :label="item.id"
+                    >{{ item.serviceName }}: {{ item.title }} / ${{
+                      item.unitprice
+                    }}</el-checkbox
+                  >
+                </el-checkbox-group>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
       </div>
-      <br />
-      <p class="table-header">服务:</p>
-      <el-row type="flex">
-        <el-col
-          :span="8"
-          class="table-header"
-          :key="index"
-          v-for="(item, index) in Object.keys(serviceList)"
-        >
-          <el-row type="flex">
-            <el-col style="text-align: right">{{ item }}: &nbsp;&nbsp;</el-col>
-            <el-col>
-              <el-checkbox
-                :label="serviceList[item].split('|')[1]"
-                @change="handleServiceChange"
-                >${{ serviceList[item].split('|')[0] }}/个</el-checkbox
-              >
-            </el-col>
-          </el-row>
-        </el-col>
-      </el-row>
 
       <br /><br />
 
@@ -345,20 +310,13 @@ packs 卖家填写的预报信息 SKU入库，包裹packs中 goods*services 展�
 
 <script>
 import Axios from '@/https/axios'
-// import UploadExcelComponent from '@/components/UploadExcel/index.vue'
-
 export default {
-  created() {
-    this.getItem()
-  },
-  // components: { UploadExcelComponent },
   data() {
     return {
       showSkuRecordDetail: false,
       skuRecords: '',
-      datetype: '1',
-      radio1: 1,
       packageList: {},
+      skuListForServiceIdObj: {},
       storageFrom: {
         warsehouse: '',
         logistics: '',
@@ -383,10 +341,12 @@ export default {
         logistics: [{ required: true, message: '请选择物流', trigger: 'blur' }]
       },
       packageRules: {},
-      serviceList: {},
+      serviceList: [],
       dialogVisible: false,
       products: [],
-      service: new Set()
+      packType: false, // 入库类型,默认按包裹入库 sku入库为true
+      goodType: false, // 入库商品类型 扫码入库为 true
+      selectedIndexs: []
     }
   },
   computed: {
@@ -394,10 +354,31 @@ export default {
       return this.$router.currentRoute.query.id
     }
   },
+  created() {
+    // 做三件事 获取服务列表信息
+    this.getItem()
+  },
+
   methods: {
+    async _getServiceList() {
+      const res = await Axios.fetchGet(
+        `/warehouse/firstpass/getContract?id=${this.id}`
+      )
+      try {
+        res.data.others.forEach(serve => {
+          serve.details.forEach(item => {
+            item.serviceName = serve.name
+            this.serviceList.push(item)
+          })
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    },
     handleSkuRecords() {
       if (this.showSkuRecordDetail) {
         this.showSkuRecordDetail = !this.showSkuRecordDetail
+        this.skuRecords = ''
         return
       }
       if (!this.skuRecords) {
@@ -417,11 +398,31 @@ export default {
               obj[x] = 1
             }
           })
-        this.storageFrom.skuList = Object.keys(obj).map(x => ({
+        const newArr = Object.keys(obj).map(x => ({
           sku: x,
           number: obj[x],
-          count: obj[x]
+          count: obj[x],
+          disabled: true
         }))
+        this.storageFrom.skuList = this.storageFrom.skuList.concat(newArr)
+        for (let i = 0, l = this.storageFrom.skuList.length; i < l; i++) {
+          const c_item = this.storageFrom.skuList[i]
+          for (let j = i + 1; j < l; j++) {
+            const n_item = this.storageFrom.skuList[j]
+            if (n_item && n_item && c_item.sku === n_item.sku) {
+              // 数量加一 删除 j
+              c_item.number++
+              this.storageFrom.skuList.splice(j, 1)
+              j--
+            }
+          }
+        }
+        this.storageFrom.skuList.forEach(item => {
+          if (!this.skuListForServiceIdObj[item.sku]) {
+            this.storageFrom.skuList[item.sku] = []
+            this.$set(this.skuListForServiceIdObj, item.sku, [])
+          }
+        })
       } catch (err) {
         this.$message.error('解析扫描入库失败')
       }
@@ -452,29 +453,6 @@ export default {
 
       return sums
     },
-    handleServiceChange(checked, event) {
-      if (checked) {
-        this.service.add(event.target.value)
-      } else {
-        this.service.delete(event.target.value)
-      }
-    },
-    beforeUpload(file) {
-      const isLt1M = file.size / 1024 / 1024 < 1
-
-      if (isLt1M) {
-        return true
-      }
-
-      this.$message({
-        message: '文件大于1M!',
-        type: 'warning'
-      })
-      return false
-    },
-    handleSuccess({ results }) {
-      this.storageFrom.skuList = results
-    },
     async getItem() {
       if (this.id) {
         const item = await Axios.fetchGet(`/biz/firstpass/${this.id}`)
@@ -484,30 +462,103 @@ export default {
           x.goods.forEach(item => {
             this.packageList[item.sku] = this.packageList[item.sku] || 0
             this.packageList[item.sku] += x.count * item.count
-            if (item.services && item.services.length) {
-              item.services.forEach(i => {
-                this.serviceList[i.title] = i.unitprice + '|' + i.id
-              })
-            }
-            // 渲染默认的sku
+            this.skuListForServiceIdObj[item.sku] = item.services.map(
+              serve => serve.id
+            )
+            item.shopItemVos.forEach(shop => {
+              const product = {
+                id: shop.shopId,
+                sku: shop.shopSku
+              }
+              this.products.push(product)
+            })
+            // 渲染默认的skuList
+
             this.storageFrom.skuList.push({
               sku: item.sku,
               number: x.count * item.count,
               count: '',
+              id: item.goodId,
               disabled: true
             })
-            this.skuRecords += item.sku + '\n'
           })
         })
+        // 储存默认值
+        this.initDate = JSON.stringify({
+          skuList: this.storageFrom.skuList,
+          skuListForServiceIdObj: this.skuListForServiceIdObj
+        })
       }
+      console.log(this.storageFrom.skuList)
+      this._getServiceList()
+    },
+    handleCheckedChange(sku) {
+      this.$set(
+        this.skuListForServiceIdObj,
+        sku,
+        this.skuListForServiceIdObj[sku]
+      )
     },
     handleSkuAdd() {
       this.storageFrom.skuList.push([])
     },
-    handleDeleteSku(index) {
-      this.storageFrom.skuList.splice(index, 1)
+    handleDeleteSku(scope) {
+      this.storageFrom.skuList.splice(scope.$index, 1)
+      delete this.skuListForServiceIdObj[scope.row.sku]
+      this.$forceUpdate()
+    },
+    selectedItemSku(value, scope) {
+      const index = scope.$index
+      if (this.selectedIndexs.includes(index)) {
+        // 包含则说明已经存在    只改变
+        const list = Object.keys(this.skuListForServiceIdObj)
+        const key = list[index]
+        delete this.skuListForServiceIdObj[key]
+      } else {
+        this.selectedIndexs.push(index)
+      }
+      this.$set(this.skuListForServiceIdObj, value, [])
+    },
+    _resetForecastType() {
+      // 切换手动入库类型时，重置为默认选项
+      const initDate = JSON.parse(this.initDate)
+      this.skuRecords = ''
+      this.storageFrom.skuList = initDate.skuList.slice()
+      this.skuListForServiceIdObj = initDate.skuListForServiceIdObj
     },
     handleSubmit() {
+      const params = {
+        goodType: this.goodType,
+        id: this.id,
+        type: this.packType
+      }
+      // 这里是包裹入库
+      if (!this.packType) {
+        // 处理下验证 是否所以的realCount都存在，并且都等于count
+        const isError = this.storageFrom.packs.some(
+          pack => pack.realCount !== pack.count
+        )
+        if (isError) {
+          this.$alert('实收数目与应收数目不等')
+          return
+        }
+        params.packs = this.storageFrom.packs.map(pack => {
+          return {
+            count: pack.count,
+            id: pack.id,
+            services: []
+          }
+        })
+      } else {
+        // 商品入库
+        const goods = this.storageFrom.skuList.map(x => ({
+          count: x.count,
+          id: x.id ? x.id : this._renderProductId(x.sku, x),
+          sku: x.sku,
+          services: this._renderSkuServices(x.sku)
+        }))
+        params.goods = goods
+      }
       this.$confirm(
         '本批次，卖家有服务请求，如已操作请点击确认，否则请点击返回',
         '提示',
@@ -517,39 +568,50 @@ export default {
           type: 'warning'
         }
       ).then(() => {
-        let goods = []
-        console.log(this.datetype)
-        if (this.datetype === '1') {
-          goods = this.storageFrom.packs.map(x => ({
-            count: x.realCount,
-            id: x.id,
-            services: [...this.service],
-            sku: x.sku
-          }))
-        } else {
-          goods = this.storageFrom.skuList.map(x => ({
-            count: x.count,
-            id: Number(x.id),
-            services: [...this.service],
-            sku: x.sku
-          }))
-        }
-        console.log(goods, 'goods', this.service)
-        console.log(this.storageFrom.packs, this.storageFrom.skuList, goods)
-        Axios.fetchPost('/warehouse/firstpass/forecast', {
-          goodType: true,
-          goods,
-          id: Number(this.id),
-          packs: this.storageFrom.packs.map(x => ({
-            count: x.count,
-            id: Number(x.id),
-            services: [...this.service]
-          })),
-          type: true
-        }).then(res => {
-          console.log(res)
+        Axios.fetchPost('/warehouse/firstpass/forecast', params).then(res => {
+          if (res.code === 1) {
+            this.$message.success(res.data)
+          }
         })
       })
+    },
+    _renderProductId(sku, x) {
+      console.log(x)
+      return this.products.find(product => product.sku === sku).id
+    },
+    _renderSkuServices(sku) {
+      const _arr = []
+      const serviceIds = this.skuListForServiceIdObj[sku]
+      this.serviceList.forEach(service => {
+        serviceIds.forEach(id => {
+          if (service.id === id) {
+            _arr.push(service)
+          }
+        })
+      })
+      return _arr
+    },
+    _handleSkuRecords(skuRecords) {
+      const arr = skuRecords.split('\n').filter(item => !!item)
+      const lastSku = arr[arr.length - 1]
+      // 判断这个值是否存在 lastSku中 即 this.products
+      if (!this.products.map(item => item.sku).includes(lastSku)) {
+        this.$alert(`该 SKU：${lastSku} 不存在`).then(() => {
+          arr.pop()
+          this.skuRecords = arr.join('\n') + '\n'
+        })
+      }
+    }
+  },
+  watch: {
+    skuRecords(nv) {
+      if (nv.endsWith('\n')) {
+        // 当有换行的时候，进行判断处理
+        this._handleSkuRecords(nv)
+      }
+    },
+    goodType() {
+      this._resetForecastType()
     }
   }
 }

@@ -47,8 +47,8 @@
       </template>
 
       <template v-slot:table>
-        <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column label="序号" width="75">
+        <el-table-column type="selection" width="40"> </el-table-column>
+        <el-table-column label="序号" width="35">
           <template slot-scope="scope">
             <span>{{
               (pagination.current - 1) * pagination.size + scope.$index + 1
@@ -58,25 +58,7 @@
         <el-table-column label="卖家SKU">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
-              <!-- <el-popover
-                placement="right-start"
-                title=""
-                trigger="hover"
-                :visible-arrow="false"
-              >
-                <div class="countdiv">
-                  <div
-                    class="countitem"
-                    v-for="(n, index) in scope.row.shopInfos"
-                    :key="index"
-                  >
-                    <p>{{ n.shop_id }}：</p>
-                    <p>{{ n.shop_sku }}</p>
-                  </div>
-                </div>
-                <i class="el-icon-question" slot="reference"></i>
-              </el-popover> -->
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
@@ -85,31 +67,27 @@
             <img :src="getImageUrl(scope.row.imgurl)" class="small-iamge" />
           </template>
         </el-table-column>
-        <el-table-column label="店铺SKU">
+        <el-table-column label="店铺SKU" width="200">
           <template slot-scope="scope">
-            <span>{{
-             $ifempty(
-                get(scope, 'row.shopInfos', [])
-                  .map(x => x.shop_sku)
-                  .join(',')
-              )
-            }}</span>
+            <p v-for="item in scope.row.shopInfos" :key="item.shopId">
+              {{ item.shopName }} : {{ item.shopSku }}
+            </p>
           </template>
         </el-table-column>
         <el-table-column label="名称">
           <template slot-scope="scope">
-            <span>{{$ifempty(scope.row.name) }}</span>
+            <span>{{ $ifempty(scope.row.name) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="单位" width="100">
           <template slot-scope="scope">
-            <span>{{$ifempty(scope.row.unit) }}</span>
+            <span>{{ $ifempty(scope.row.unit) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="重量" width="100">
           <template slot-scope="scope">
             <span
-              >{{$ifempty(scope.row.weight) }} /
+              >{{ $ifempty(scope.row.weight) }} /
               {{ scope.row.weight && scope.row.weight_unit }}</span
             >
           </template>
@@ -118,22 +96,22 @@
         <el-table-column label="尺寸">
           <template slot-scope="scope">
             <p>
-              长： {{$ifempty(scope.row.length) }}
-              {{$ifempty(scope.row.size_unit) }}
+              长： {{ $ifempty(scope.row.length) }}
+              {{ $ifempty(scope.row.size_unit) }}
             </p>
             <p>
-              宽： {{$ifempty(scope.row.width) }}
-              {{$ifempty(scope.row.size_unit) }}
+              宽： {{ $ifempty(scope.row.width) }}
+              {{ $ifempty(scope.row.size_unit) }}
             </p>
             <p>
-              高：{{$ifempty(scope.row.height) }}
-              {{$ifempty(scope.row.size_unit) }}
+              高：{{ $ifempty(scope.row.height) }}
+              {{ $ifempty(scope.row.size_unit) }}
             </p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <span>{{$ifempty(scope.row.notes) }}</span>
+            <span>{{ $ifempty(scope.row.notes) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="150">
@@ -166,6 +144,7 @@
       :before-close="handleEditDialogClose"
     >
       <product-dialog
+        v-if="dialogVisible"
         :productForm="productForm"
         @close="dialogVisible = false"
         ref="productDialogRef"
@@ -298,6 +277,9 @@ export default {
   },
   methods: {
     get,
+    _renderSku(row) {
+      console.log(row.shopInfos)
+    },
     getImageUrl(imgurl) {
       if (imgurl) {
         return '/api/file/?key=' + imgurl

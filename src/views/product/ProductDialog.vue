@@ -1,6 +1,6 @@
 <template>
   <el-form
-    :model="productForm"
+    :model="productFormDialog"
     class="product-form"
     label-width="100px"
     :rules="productRules"
@@ -41,43 +41,39 @@
         </p>
         <!-- todo: 新增名称和商品sku -->
         <el-form-item label="商品sku:" prop="sku">
-          <el-input style="width: 198px" v-model="productForm.sku"></el-input>
+          <el-input style="width: 198px" v-model="productFormDialog.sku" placeholder="请输入商品SKU"></el-input>
+        </el-form-item>
+        <el-form-item class="item-block">
+          <el-button type="primary">打印sku</el-button>
         </el-form-item>
         <el-form-item label="名称:" prop="name">
-          <el-input style="width: 198px" v-model="productForm.name"></el-input>
+          <el-input style="width: 198px" v-model="productFormDialog.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item label="单位:" prop="unit">
-          <!-- <el-select
-                style="width: 198px"
-                v-model="productForm.unit"
-                placeholder=""
-              >
-                <el-option
-                  v-for="(item, index) in productUnit"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select> -->
-          <!-- <el-input
-                type="text"
-                v-model="productForm.unit"
-                placeholder="请输入单位"
-              ></el-input> -->
-          <el-input
-            style="width: 198px"
-            v-model="productForm.unit"
+          <el-select
+            filterable
+            allow-create
+            default-first-option
+            v-model="productFormDialog.unit"
             placeholder="请输入单位"
-          ></el-input>
+          >
+            <el-option
+              v-for="item in productUnit"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="长:" prop="length">
           <el-input
             type="number"
-            v-model="productForm.length"
+            v-model="productFormDialog.length"
             placeholder="请输入长"
           >
             <el-select
-              v-model="productForm.size_unit"
+              v-model="productFormDialog.size_unit"
               slot="append"
               placeholder=""
               size="mini"
@@ -90,11 +86,11 @@
         <el-form-item label="宽:" prop="width">
           <el-input
             type="number"
-            v-model="productForm.width"
+            v-model="productFormDialog.width"
             placeholder="请输入宽"
           >
             <el-select
-              v-model="productForm.size_unit"
+              v-model="productFormDialog.size_unit"
               slot="append"
               placeholder=""
             >
@@ -106,11 +102,11 @@
         <el-form-item label="高:" prop="height">
           <el-input
             type="number"
-            v-model="productForm.height"
+            v-model="productFormDialog.height"
             placeholder="请输入高"
           >
             <el-select
-              v-model="productForm.size_unit"
+              v-model="productFormDialog.size_unit"
               slot="append"
               placeholder=""
             >
@@ -122,11 +118,11 @@
         <el-form-item label="重量:" prop="weight">
           <el-input
             type="number"
-            v-model="productForm.weight"
+            v-model="productFormDialog.weight"
             placeholder="请输入重量"
           >
             <el-select
-              v-model="productForm.weight_unit"
+              v-model="productFormDialog.weight_unit"
               slot="append"
               placeholder=""
             >
@@ -163,7 +159,7 @@
         <el-form-item label="店铺名称:" prop="shopId">
           <el-select
             style="width: 314px; margin-bottom: 10px; height: 32px"
-            v-for="(shopInfo, index) in productForm.shopInfos"
+            v-for="(shopInfo, index) in productFormDialog.shopInfos"
             :key="index"
             clearable
             v-model="shopInfo.shopId"
@@ -187,7 +183,7 @@
             <el-input
               style="width: 314px; margin-bottom: 10px"
               :placeholder="'SKU序号-' + (index + 1)"
-              v-for="(item, index) in productForm.shopInfos"
+              v-for="(item, index) in productFormDialog.shopInfos"
               :key="index"
               v-model="item.shopSku"
               class="input-with-select"
@@ -211,7 +207,7 @@
         style="width: 760px"
         rows="6"
         show-word-limit
-        v-model="productForm.notes"
+        v-model="productFormDialog.notes"
         placeholder="请填写备注相关信息"
       ></el-input>
     </el-form-item>
@@ -221,7 +217,6 @@
 <script>
 import Axios from '@/https/axios'
 import { cloneDeep } from 'loadsh'
-import { initProductForm } from './product.vue'
 import productService from '../../services/productService'
 export default {
   props: {
@@ -244,7 +239,25 @@ export default {
         unit: [{ required: true, message: '请选择商品单位', trigger: 'blur' }]
       },
       imgurl: '',
-      shoplist: []
+      shoplist: [],
+      productUnit: [
+        {
+          key: 1,
+          value: '条',
+          label: '件'
+        },
+        {
+          key: 2,
+          value: '条',
+          label: '条'
+        },
+        {
+          key: 3,
+          value: '个',
+          label: '个'
+        }
+      ],
+      productFormDialog: null
     }
   },
   computed: {
@@ -253,9 +266,9 @@ export default {
     }
   },
   created() {
+    this.productFormDialog = cloneDeep(this.productForm)
     this.getShopList()
-    console.log(this.productForm)
-    const { imgurl } = this.productForm
+    const { imgurl } = this.productFormDialog
     this.imgurl = imgurl ? '/api/file/?key=' + imgurl : imgurl
   },
   methods: {
@@ -274,14 +287,7 @@ export default {
       // this.options = res.records.map(x=>{})
     },
     beforeAvatarUpload(file) {
-      // const extension = file.name.split('.')[1] === 'xls'
-      // const extension2 = file.name.split('.')[1] === 'xlsx'
-
       const isLt2M = file.size / 1024 / 1024 < 2
-
-      // if (!extension && !extension2) {
-      //   this.$message.error('上传文件只能是 xls、xlsx格式!')
-      // }
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
@@ -289,11 +295,11 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imgurl = URL.createObjectURL(file.raw)
-      this.productForm.imgurl = res.data
+      this.productFormDialog.imgurl = res.data
     },
     addSKURow() {
-      this.productForm.shopInfos = this.productForm.shopInfos || []
-      this.productForm.shopInfos.push({ shopId: '', shopSku: '' })
+      this.productFormDialog.shopInfos = this.productFormDialog.shopInfos || []
+      this.productFormDialog.shopInfos.push({ shopId: '', shopSku: '' })
     },
     addItem() {
       this.$refs.productDialogRef.validate(async valid => {
@@ -311,7 +317,7 @@ export default {
             weight,
             notes,
             shopInfos
-          } = this.productForm
+          } = this.productFormDialog
 
           try {
             await productService.addItem({
@@ -334,7 +340,6 @@ export default {
             this.$refs.productDialogRef.resetFields()
             // 关闭弹窗
             this.$emit('close')
-            this.productForm = cloneDeep(initProductForm)
           } catch (err) {
             this.$message.error(err.payload.message)
           }
@@ -349,13 +354,12 @@ export default {
         if (valid) {
           try {
             await this.updateList({
-              ...this.productForm
+              ...this.productFormDialog
             })
             this.$store.dispatch('noPage/init')
             this.$emit('close')
             this.$refs.productDialogRef.resetFields()
             this.$message.success('修改完成')
-            this.productForm = cloneDeep(initProductForm)
           } catch (err) {
             this.$message.error(err)
           }
@@ -409,5 +413,9 @@ export default {
   display: block;
   max-width: 340px;
   max-height: 350px;
+}
+.item-block {
+  padding-left: 100px;
+  display: block !important;
 }
 </style>

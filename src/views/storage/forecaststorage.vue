@@ -19,10 +19,21 @@
           <span>{{ storageFrom.name }}</span>
         </el-form-item>
         <el-form-item label="物流信息:" prop="logistic" style="width: 40%">
-          <el-input
+          <el-select
             v-model="storageFrom.logistic"
+            filterable
+            allow-create
+            default-first-option
             placeholder="运送物流或手动填写"
-          ></el-input>
+          >
+            <el-option
+              v-for="item in cangkus"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="物流单号:" prop="lognumber" style="width: 40%">
           <el-input
@@ -73,14 +84,14 @@
           <el-table-column label="序号" width="75px">
             <template slot-scope="scope">
               <div>
-                <span>{{$ifempty(scope.$index + 1) }}</span>
+                <span>{{ $ifempty(scope.$index + 1) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="包裹数" width="100px">
             <template slot-scope="scope">
               <div>
-                <span>{{$ifempty(scope.row.count) }}</span>
+                <span>{{ $ifempty(scope.row.count) }}</span>
               </div>
             </template>
           </el-table-column>
@@ -130,14 +141,14 @@
           <el-table-column label="费用" width="75px">
             <template slot-scope="scope">
               <div>
-                <span>{{$ifempty(scope.row.price) }}</span>
+                <span>{{ $ifempty(scope.row.price) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="备注">
             <template slot-scope="scope">
               <div>
-                <span>{{$ifempty(scope.row.desc) }}</span>
+                <span>{{ $ifempty(scope.row.desc) }}</span>
               </div>
             </template>
           </el-table-column>
