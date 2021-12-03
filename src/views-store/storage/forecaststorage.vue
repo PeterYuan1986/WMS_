@@ -190,7 +190,9 @@
         <br />
 
         <el-table
-          v-if="storageFrom.skuList.length || showSkuRecordDetail"
+          v-if="
+            storageFrom.skuList.length && (!goodType || showSkuRecordDetail)
+          "
           :data="storageFrom.skuList"
           border
           class="product-table"
@@ -245,7 +247,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <br />
         <el-input
           v-if="goodType && !showSkuRecordDetail"
           type="textarea"
@@ -267,8 +268,11 @@
       </div>
 
       <br />
+      <div class="title">
+        <i class="fa fa-bookmark"></i>
+        <p>服务</p>
+      </div>
       <br />
-
       <div v-for="sku in Object.keys(skuListForServiceIdObj)" :key="sku">
         <p class="table-header">sku: {{ sku }}</p>
         <el-row type="flex">
@@ -388,16 +392,17 @@ export default {
         const skuList = this.skuRecords.split('\n')
         this.showSkuRecordDetail = true
         const obj = {}
-        skuList
-          .filter(x => !!x)
-          .map(x => x.trim().toLocaleLowerCase())
-          .forEach(x => {
-            if (obj[x]) {
-              obj[x] += 1
-            } else {
-              obj[x] = 1
-            }
-          })
+        skuList &&
+          skuList
+            .filter(x => !!x)
+            .map(x => x.trim().toLocaleLowerCase())
+            .forEach(x => {
+              if (obj[x]) {
+                obj[x] += 1
+              } else {
+                obj[x] = 1
+              }
+            })
         const newArr = Object.keys(obj).map(x => ({
           sku: x,
           number: obj[x],
@@ -465,12 +470,9 @@ export default {
             this.skuListForServiceIdObj[item.sku] = item.services.map(
               serve => serve.id
             )
-            item.shopItemVos.forEach(shop => {
-              const product = {
-                id: shop.shopId,
-                sku: shop.shopSku
-              }
-              this.products.push(product)
+            this.products.push({
+              id: item.goodId,
+              sku: item.sku
             })
             // 渲染默认的skuList
 
@@ -489,7 +491,6 @@ export default {
           skuListForServiceIdObj: this.skuListForServiceIdObj
         })
       }
-      console.log(this.storageFrom.skuList)
       this._getServiceList()
     },
     handleCheckedChange(sku) {
@@ -522,9 +523,15 @@ export default {
     _resetForecastType() {
       // 切换手动入库类型时，重置为默认选项
       const initDate = JSON.parse(this.initDate)
-      this.skuRecords = ''
-      this.storageFrom.skuList = initDate.skuList.slice()
-      this.skuListForServiceIdObj = initDate.skuListForServiceIdObj
+      if (!this.goodType) {
+        this.storageFrom.skuList = initDate.skuList.slice()
+        this.skuListForServiceIdObj = initDate.skuListForServiceIdObj
+      } else {
+        this.skuRecords = ''
+        this.showSkuRecordDetail = false
+        this.storageFrom.skuList = []
+        this.skuListForServiceIdObj = {}
+      }
     },
     handleSubmit() {
       const params = {
@@ -553,9 +560,9 @@ export default {
         // 商品入库
         const goods = this.storageFrom.skuList.map(x => ({
           count: x.count,
-          id: x.id ? x.id : this._renderProductId(x.sku, x),
+          id: x.id ? x.id : '',
           sku: x.sku,
-          services: this._renderSkuServices(x.sku)
+          services: this.skuListForServiceIdObj[x.sku]
         }))
         params.goods = goods
       }
@@ -571,25 +578,12 @@ export default {
         Axios.fetchPost('/warehouse/firstpass/forecast', params).then(res => {
           if (res.code === 1) {
             this.$message.success(res.data)
+            setTimeout(() => {
+              this.$router.replace('/allrecords')
+            }, 1000)
           }
         })
       })
-    },
-    _renderProductId(sku, x) {
-      console.log(x)
-      return this.products.find(product => product.sku === sku).id
-    },
-    _renderSkuServices(sku) {
-      const _arr = []
-      const serviceIds = this.skuListForServiceIdObj[sku]
-      this.serviceList.forEach(service => {
-        serviceIds.forEach(id => {
-          if (service.id === id) {
-            _arr.push(service)
-          }
-        })
-      })
-      return _arr
     },
     _handleSkuRecords(skuRecords) {
       const arr = skuRecords.split('\n').filter(item => !!item)
@@ -598,7 +592,10 @@ export default {
       if (!this.products.map(item => item.sku).includes(lastSku)) {
         this.$alert(`该 SKU：${lastSku} 不存在`).then(() => {
           arr.pop()
-          this.skuRecords = arr.join('\n') + '\n'
+          this.skuRecords = arr.join('\n')
+          if (arr.length) {
+            this.skuRecords += '\n'
+          }
         })
       }
     }
