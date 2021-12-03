@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 <template>
   <div class="totalorder-container">
     <div class="filter-container">
@@ -182,37 +181,49 @@
         height="99%"
       >
         <el-table-column fixed type="selection" width="55"> </el-table-column>
-        <el-table-column label="订单号" width="120">
+        <el-table-column label="订单号">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.externalId) }}</span>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="订单详情" width="250">
+        <el-table-column label="订单详情">
           <template slot-scope="scope">
-            <p>平台：{{$ifempty(scope.row.name) }}</p>
-            <p>店铺名称：{{$ifempty(scope.row.name) }}</p>
+            <p>平台：{{ $ifempty(scope.row.platform) }}</p>
+            <p>店铺名称：{{ $ifempty(scope.row.shop) }}</p>
           </template>
         </el-table-column>
-        <el-table-column label="订单明细" width="250">
+        <el-table-column label="订单明细">
           <template slot-scope="scope">
-            <p>品名：{{$ifempty(scope.row.name) }}</p>
-            <p>店铺SKU：{{$ifempty(scope.row.name) }}</p>
-            <p>仓库SKU：{{$ifempty(scope.row.name) }}</p>
-            <p>数量：{{$ifempty(scope.row.name) }}</p>
+            <div
+              class="order-detail-item"
+              v-for="(goods, index) in scope.row.goods"
+              :key="index"
+            >
+              <p>品名：{{ $ifempty(goods.name) }}</p>
+              <p>店铺SKU：{{ $ifempty(goods.sku) }}</p>
+              <p>仓库SKU：{{ $ifempty('') }}</p>
+              <p>数量：{{ $ifempty(goods.count) }}</p>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="收件人" width="200">
+        <el-table-column label="收件人">
           <template slot-scope="scope">
-            <p>姓名：{{$ifempty(scope.row.name) }}</p>
-            <p>地址：{{$ifempty(scope.row.name) }}</p>
+            <p>姓名：{{ $ifempty(scope.row.receiver) }}</p>
+            <p>
+              地址：{{
+                $ifempty(
+                  scope.row.mainStreet + scope.row.subStreet + scope.row.zipcode
+                )
+              }}
+            </p>
           </template>
         </el-table-column>
-        <el-table-column label="发货物流信息" width="250">
+        <!-- <el-table-column label="发货物流信息" width="250">
           <template slot-scope="scope">
-            <p>配送物流：{{$ifempty(scope.row.name) }}</p>
-            <p>单号：{{$ifempty(scope.row.name) }}</p>
+            <p>配送物流：{{ $ifempty(scope.row.name) }}</p>
+            <p>单号：{{ $ifempty(scope.row.name) }}</p>
             <p>
               配送状态：
               <strong class="statu0" v-if="scope.row.statu == 0">待发货</strong>
@@ -226,28 +237,26 @@
         </el-table-column>
         <el-table-column label="发货仓库" width="200">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
-        </el-table-column>
-        <el-table-column label="操作日期" width="250">
+        </el-table-column> -->
+        <el-table-column label="操作日期">
           <template slot-scope="scope">
-            <p>创建日期：{{$ifempty(scope.row.name) }}</p>
-            <p>分配日期：{{$ifempty(scope.row.name) }}</p>
-            <p>发货日期：{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.orderDate) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" fixed="right" width="240">
           <template slot-scope="scope">
             <el-button
               title="编辑"
-              type="danger"
+              type="info"
               size="mini"
               @click="handleEdit(scope.row)"
               >编辑
             </el-button>
             <el-button
               title="删除"
-              type="warning"
+              type="danger"
               size="mini"
               @click="handleDelete(scope.row)"
             >
@@ -291,33 +300,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="数量" width="80">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人信息">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="280">
@@ -371,33 +380,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="已发数量" width="80">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="收件人信息">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="物流追踪码">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="发货时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="货物状态" width="80">
@@ -459,33 +468,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="退单数量" width="80">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="退单时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="备注">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="80">
@@ -525,33 +534,33 @@
         <el-table-column label="SKU" width="120">
           <template slot-scope="scope">
             <div>
-              <span>{{$ifempty(scope.row.sku) }}</span>
+              <span>{{ $ifempty(scope.row.sku) }}</span>
             </div>
           </template>
         </el-table-column>
         <el-table-column label="产品名称">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="完成数量" width="80">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="下单时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="发货时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="到货时间">
           <template slot-scope="scope">
-            <p>{{$ifempty(scope.row.name) }}</p>
+            <p>{{ $ifempty(scope.row.name) }}</p>
           </template>
         </el-table-column>
         <el-table-column label="货物状态" width="80">
@@ -583,11 +592,11 @@
         </el-table-column>
       </el-table>
 
-      <div v-show="!listLoading" class="pagination-container">
+      <div v-show="list.length" class="pagination-container">
         <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page.sync="listQuery.current"
-          :page-size="listQuery.size"
+          @current-change="getListExternalOrders"
+          :current-page.sync="searchForm.current"
+          :page-size="searchForm.size"
           layout="total, prev, pager, next, jumper"
           :total="total"
         >
@@ -604,6 +613,7 @@
         </el-button>
       </div>
     </div>
+
     <el-dialog
       title="订单详情"
       :visible.sync="dialogVisible"
@@ -748,18 +758,18 @@
           <el-table-column label="SKU" width="120">
             <template slot-scope="scope">
               <div>
-                <span>{{$ifempty(scope.row.sku) }}</span>
+                <span>{{ $ifempty(scope.row.sku) }}</span>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="商品名称">
             <template slot-scope="scope">
-              <p>{{$ifempty(scope.row.name) }}</p>
+              <p>{{ $ifempty(scope.row.name) }}</p>
             </template>
           </el-table-column>
           <el-table-column label="应发数量" width="80">
             <template slot-scope="scope">
-              <p>{{$ifempty(scope.row.ycount) }}</p>
+              <p>{{ $ifempty(scope.row.ycount) }}</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -769,7 +779,7 @@
             v-if="yifastatu == 2"
           >
             <template slot-scope="scope">
-              <p>{{$ifempty(scope.row.scount) }}</p>
+              <p>{{ $ifempty(scope.row.scount) }}</p>
             </template>
           </el-table-column>
           <el-table-column
@@ -871,6 +881,7 @@ import OrderImport from './OrderImport.vue'
 import KeySelector from './KeySelector.vue'
 import { importOrders } from '@/https/api'
 import { _handleImportParams } from './orderUtil'
+import Axios from '@/https/axios'
 
 export default {
   components: {
@@ -884,53 +895,22 @@ export default {
       importstatu: '',
       importdialogVisible: false,
       keysSelectDialogVisible: false,
-      buymodelDialog: true,
+      buymodelDialog: false,
       searchForm: {
-        sku: null,
-        warehouse: null,
-        time: null,
-        name: null,
-        platform: null,
-        ordernum: null,
-        receiver: null,
-        del_to: null,
-        tracknum: null,
-        seller: null
+        current: 1,
+        goodsName: '',
+        orderId: '',
+        platform: '',
+        positoryId: '',
+        receiver: '',
+        shop: '',
+        size: 10
       },
-      shopList: [],
       types: [
         { label: '一库', value: '1' },
         { label: '二库', value: '4' }
       ],
-      list: [
-        {
-          imgurl: '',
-          sku: 'sdoj132',
-          name: '一次性一用口罩',
-          count: 300,
-          price: 100,
-          desc: '',
-          statu: 0
-        },
-        {
-          imgurl: '',
-          sku: 'sdoj132',
-          name: '一次性一用口罩',
-          count: 300,
-          price: 100,
-          desc: '',
-          statu: 1
-        },
-        {
-          imgurl: '',
-          sku: 'sdoj132',
-          name: '一次性一用口罩',
-          count: 300,
-          price: 100,
-          desc: '',
-          statu: 2
-        }
-      ],
+      list: [],
       yifaForm: {
         list: [
           {
@@ -946,19 +926,19 @@ export default {
       },
 
       options: [
-        { label: '确认发货', value: '1' },
-        { label: '分配仓库', value: '2' },
-        { label: '购买Label', value: '3' },
-        { label: '打印Label', value: '4' },
-        { label: '更新物流状态', value: '5' },
-        { label: '删除订单', value: '6' }
+        { label: '确认发货', value: 'send' },
+        { label: '分配仓库', value: 'allot' },
+        { label: '购买Label', value: 'buy' },
+        { label: '打印Label', value: 'print' },
+        { label: '更新物流状态', value: 'update' },
+        { label: '删除订单', value: 'delete' }
       ],
       listLoading: false,
       listQuery: {
         current: 1,
         size: 10
       },
-      total: 3,
+      total: 0,
       dialogVisible: false,
       yifadialogVisible: false,
       title: '',
@@ -970,13 +950,26 @@ export default {
       header: []
     }
   },
+  created() {
+    this.getListExternalOrders()
+  },
   methods: {
+    getListExternalOrders() {
+      this.listLoading = true
+      Axios.fetchGet(
+        '/seller/secondpass/ext/listExternalOrders',
+        this.searchForm
+      ).then(res => {
+        this.listLoading = false
+        this.list = res.data.records
+        this.total = res.data.total
+      })
+    },
     importFile(data) {
       // 对data里面的 orders 进行处理
       const { orders } = data
       data.orders = _handleImportParams(orders, this.labelKeys)
       importOrders(data).then(res => {
-        console.log(res.data)
         this.$refs.orderImport.close()
         this.$message.success('导入成功')
       })
@@ -997,14 +990,22 @@ export default {
       if (command === 'buy') {
         this.handleBuyClick()
       }
-      // this.$message('click on item ' + command)
     },
     handleBuyClick() {
       this.dialogVisible = true
     },
+    handleFilter() {
+      switch (this.option) {
+        case 'delete':
+          this._deleteConfirm('您确定要进行批量删除吗?', () =>
+            this._batchesDelete()
+          )
+          break
+        default:
+          break
+      }
+    },
 
-    getlist() {},
-    handleFilter() {},
     handleimport() {
       this.importstatu = 'uploading'
       this.importdialogVisible = true
@@ -1050,19 +1051,7 @@ export default {
         this.options = [{ label: '批量删除', value: '1' }]
       }
     },
-    handleDelete(row) {
-      this.$confirm(
-        '<p style="font-size: 18px;font-weight: bold;color: black;line-height: 32px;font-family: Microsoft YaHei;">您确定要退单吗?</p>',
-        '删除',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          dangerouslyUseHTMLString: true,
-          type: 'warning'
-        }
-      ).catch(() => {})
-    },
-    handleCurrentChange(val) {},
+
     handleClose(done) {
       done()
     },
@@ -1079,7 +1068,44 @@ export default {
     chargeback() {
       this.yifadialogVisible = false
     },
-    markcomplete(row) {}
+    markcomplete(row) {},
+
+    // delete 相关
+    handleDelete(row) {
+      this._deleteConfirm('您确定要退单吗?', () => this._deleteRow(row.id))
+    },
+    _deleteRow(id) {
+      Axios.fetchDelete(`/seller/secondpass/ext/delExternalOrder/${id}`).then(
+        res => {
+          if (res.data) {
+            this.$message.success('删除成功')
+            this.getListExternalOrders()
+          }
+        }
+      )
+    },
+    _batchesDelete() {
+      const ids = this.multipleSelection.map(item => item.id)
+      Axios.fetchPost(`/seller/secondpass/ext/delExternalOrder`, ids).then(
+        res => {
+          if (res.data) {
+            this.$message.success('删除成功')
+            this.getListExternalOrders()
+          }
+        }
+      )
+    },
+    _deleteConfirm(title, confirmCb) {
+      // 您确定要退单吗?
+      this.$confirm(`<p class="delete-title">${title}</p>`, '删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        dangerouslyUseHTMLString: true,
+        type: 'warning'
+      }).then(() => {
+        confirmCb()
+      })
+    }
   }
 }
 </script>
@@ -1381,5 +1407,19 @@ p {
       }
     }
   }
+}
+
+.order-detail-item {
+  border-bottom: 1px solid #ccc;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+.delete-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  line-height: 32px;
+  font-family: Microsoft YaHei;
 }
 </style>
