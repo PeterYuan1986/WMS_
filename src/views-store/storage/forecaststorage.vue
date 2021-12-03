@@ -471,11 +471,14 @@ export default {
               serve => serve.id
             )
             this.products.push({
-              id: item.goodId,
               sku: item.sku
             })
-            // 渲染默认的skuList
-
+            item.shopItemVos.forEach(shop => {
+              const product = {
+                sku: shop.shopSku
+              }
+              this.products.push(product)
+            })
             this.storageFrom.skuList.push({
               sku: item.sku,
               number: x.count * item.count,
