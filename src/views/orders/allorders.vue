@@ -249,7 +249,6 @@
           <template slot-scope="scope">
             <el-button
               title="编辑"
-              type="info"
               size="mini"
               @click="handleEdit(scope.row)"
               >编辑

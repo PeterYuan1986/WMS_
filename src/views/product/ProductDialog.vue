@@ -12,6 +12,7 @@
       <el-col :span="12" style="text-align: center">
         <el-form-item prop="imgurl" style="margin-top: 20px">
           <el-upload
+          :disabled="showDisabled"
             class="avatar-uploader"
             action="/api/file/upload"
             :headers="{
@@ -41,18 +42,29 @@
         </p>
         <!-- todo: 新增名称和商品sku -->
         <el-form-item label="商品sku:" prop="sku">
-          <el-input style="width: 198px" v-model="productFormDialog.sku" placeholder="请输入商品SKU"></el-input>
+          <el-input
+            :disabled="showDisabled"
+            style="width: 198px"
+            v-model="productFormDialog.sku"
+            placeholder="请输入商品SKU"
+          ></el-input>
         </el-form-item>
-        <el-form-item class="item-block">
+        <el-form-item class="item-block" v-if="showDisabled">
           <el-button type="primary">打印sku</el-button>
         </el-form-item>
         <el-form-item label="名称:" prop="name">
-          <el-input style="width: 198px" v-model="productFormDialog.name" placeholder="请输入商品名称"></el-input>
+          <el-input
+            style="width: 198px"
+            :disabled="showDisabled"
+            v-model="productFormDialog.name"
+            placeholder="请输入商品名称"
+          ></el-input>
         </el-form-item>
         <el-form-item label="单位:" prop="unit">
           <el-select
             filterable
             allow-create
+            :disabled="showDisabled"
             default-first-option
             v-model="productFormDialog.unit"
             placeholder="请输入单位"
@@ -69,6 +81,7 @@
         <el-form-item label="长:" prop="length">
           <el-input
             type="number"
+            :disabled="showDisabled"
             v-model="productFormDialog.length"
             placeholder="请输入长"
           >
@@ -86,6 +99,7 @@
         <el-form-item label="宽:" prop="width">
           <el-input
             type="number"
+            :disabled="showDisabled"
             v-model="productFormDialog.width"
             placeholder="请输入宽"
           >
@@ -102,6 +116,7 @@
         <el-form-item label="高:" prop="height">
           <el-input
             type="number"
+            :disabled="showDisabled"
             v-model="productFormDialog.height"
             placeholder="请输入高"
           >
@@ -118,6 +133,7 @@
         <el-form-item label="重量:" prop="weight">
           <el-input
             type="number"
+            :disabled="showDisabled"
             v-model="productFormDialog.weight"
             placeholder="请输入重量"
           >
@@ -181,6 +197,7 @@
         <el-form-item label="店铺SKU:" prop="shopSku">
           <div>
             <el-input
+              :disabled="showDisabled"
               style="width: 314px; margin-bottom: 10px"
               :placeholder="'SKU序号-' + (index + 1)"
               v-for="(item, index) in productFormDialog.shopInfos"
@@ -202,6 +219,7 @@
 
     <el-form-item label="备注:" label-width="50" prop="notes">
       <el-input
+        :disabled="showDisabled"
         type="textarea"
         maxlength="300"
         style="width: 760px"
@@ -220,7 +238,8 @@ import { cloneDeep } from 'loadsh'
 import productService from '../../services/productService'
 export default {
   props: {
-    productForm: Object
+    productForm: Object,
+    showDisabled: Boolean
   },
   data() {
     return {

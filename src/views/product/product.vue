@@ -57,9 +57,9 @@
         </el-table-column>
         <el-table-column label="卖家SKU">
           <template slot-scope="scope">
-            <div>
-              <span>{{ $ifempty(scope.row.sku) }}</span>
-            </div>
+            <span class="sku-pointer" @click="showDetailForSku(scope.row)">{{
+              $ifempty(scope.row.sku)
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column label="图片">
@@ -146,12 +146,17 @@
       <product-dialog
         v-if="dialogVisible"
         :productForm="productForm"
+        :showDisabled="showDisabled"
         @close="dialogVisible = false"
         ref="productDialogRef"
       ></product-dialog>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm">保 存</el-button>
+        <el-button @click="dialogVisible = false" v-if="!showDisabled"
+          >取 消</el-button
+        >
+        <el-button type="primary" @click="submitForm">{{
+          showDisabled ? '确 定' : '保 存'
+        }}</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -254,7 +259,8 @@ export default {
         }
       ],
       shoplist: [],
-      productForm: cloneDeep(initProductForm)
+      productForm: cloneDeep(initProductForm),
+      showDisabled: false
     }
   },
   computed: {
@@ -267,7 +273,6 @@ export default {
         return this.$store.state.noPage.filters
       },
       set(value) {
-        console.log({ value })
         this.$store.commit('noPage/updateMessage', value)
       }
     }
@@ -294,13 +299,18 @@ export default {
       if (this.title === '编辑产品') {
         this.$refs.productDialogRef.updateItem()
       }
+
+      if (this.title === '商品详情') {
+        console.log(123)
+        this.dialogVisible = false
+      }
     },
     handleimport() {
       this.importdialogVisible = true
     },
-    handleEdit(row) {
+    handleEdit(row, flag) {
       this.productForm = row
-      this.title = '编辑产品'
+      this.title = flag === 'detail' ? '商品详情' : '编辑产品'
       if (!this.productForm.shopInfos || !this.productForm.shopInfos.length) {
         this.productForm.shopInfos = [{ shopId: '', shopSku: '' }]
       }
@@ -329,14 +339,11 @@ export default {
         type: 'warning'
       }).then(async () => {
         await productService.deleteItem({ openid: item.openid })
-        console.log('Request cancled', item)
         this.$store.dispatch('noPage/init')
         this.$message.success('删除成功')
       })
     },
-    async handleSuccess({ results, header }) {
-      console.log({ results, header })
-      // this.tableHeader = header
+    async handleSuccess({ results }) {
       await Axios.fetchPost(
         '/iteminfo/addBatch',
         results.map(x => {
@@ -376,7 +383,6 @@ export default {
     },
     handleCancleRequest() {},
     async handleBitchDispatch(key, array) {
-      console.log(key, array)
       if (!array.length) this.$message.warning('请选择要批量操作的行')
       this.$confirm('是否确定删除该商品?', '提示', {
         confirmButtonText: '确定',
@@ -395,6 +401,17 @@ export default {
     },
     handleCurrentChange(object) {
       console.log(object)
+    },
+    showDetailForSku(row) {
+      this.showDisabled = true
+      this.handleEdit(row, 'detail')
+    }
+  },
+  watch: {
+    dialogVisible(nv) {
+      if (!nv) {
+        this.showDisabled = false
+      }
     }
   }
 }
@@ -723,6 +740,13 @@ export default {
 .shopSku {
   /deep/.el-form-item__label {
     text-align: left;
+  }
+}
+
+.sku-pointer {
+  cursor: pointer;
+  &:hover {
+    color: #409eff;
   }
 }
 </style>
